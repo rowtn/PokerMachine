@@ -18,8 +18,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         reel.iterateOnce();
         reelCards = reel.getCards();
-        for (list<PokerCard>::iterator it = reelCards.begin(); it != reelCards.end(); ++it) {
-            cout << it->getId() << "|" << it->getSuit() << endl;
+        list<PokerCard>::iterator it;
+        int i; //used to only display only 3 cards of the reel at any given time
+        for (i = 0, it = reelCards.begin(); i < 3 && it != reelCards.end(); i++, ++it) {
+            cout << it->getId() << " | " << it->getSuit() << endl;
         }
         Sleep(100);
     }

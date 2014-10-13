@@ -10,9 +10,9 @@
 using namespace std;
 
 /* Method prototypes */
-void display(void); //display cards on screen
-void init(void); //initialize slot machine
-void gameloop(void); //calculations to be done every frame
+void display(void);     //display cards on screen
+void init(void);        //initialize slot machine
+void gameloop(void);    //calculations to be done every frame
 
 Reel reels[5];
 
@@ -22,6 +22,14 @@ int _tmain(int argc, _TCHAR* argv[]) {
     init();
     while (true) {
         int startTime = time(0);
+        /*
+            The following two lines are used for clearing the screen.
+            It puts the system cursor at the start of the screen,
+            any output after (cout << "Hello world") will override the old characters on the screen.
+            Similar to pressing 'Ins' on your keyboard, and typing over a sentance.
+            This works in this case as it is only neccesary to over-write characters on the screen.
+            However system("cls") is still required when a full clear screen is needed. This is essentially a little hack.
+        */
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();

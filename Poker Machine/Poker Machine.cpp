@@ -14,17 +14,20 @@ using namespace std;
 void display(void);     //display cards on screen
 void init(void);        //initialize slot machine
 void gameloop(void);    //calculations to be done every frame
+int checkWins(void);    //Checks for wins, returns credits won
 
 Reel reels[5];
+bool slotsRunning = true;
 
 int _tmain(int argc, _TCHAR* argv[]) {
-    srand(time(0));
     system("color a");
+start:
+    slotsRunning = true;
+    system("cls");
+    srand(time(0));
     init();
-    while (true) {
-        clock_t t;
-        t = clock();
-        
+    while (slotsRunning) {
+        clock_t t = clock(); //Used for debug
         /*
             The following two lines are used for clearing the screen.
             It puts the system cursor at the start of the screen,
@@ -32,7 +35,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
             Similar to pressing 'Ins' on your keyboard, and typing over a sentance.
             This works in this case as it is only neccesary to over-write characters on the screen.
             However system("cls") is still required when a full clear screen is needed. This is essentially a little hack.
-        */
+            */
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
@@ -40,7 +43,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
         cout << endl << " " << clock() - t << "ms taken for iteration." << endl;
         Sleep(100);
     }
-    system("pause");
+    checkWins();
+    cout << "Press any key to play again!" << endl;
+    system("pause>nul");
+    goto start;
 	return 0;
 }
 
@@ -55,7 +61,7 @@ void display() {
         cout << endl;                                                               //Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
     }
     for (int i = 0; i < 5; i++) {
-        cout << "  " << reels[i].getSpinsLeft() << "      ";
+        cout << "   " << reels[i].getSpinsLeft() << "    ";
     }
 }
 
@@ -71,7 +77,15 @@ void init() {
 }
 
 void gameloop() {
+    int totalSpinsLeft = 0;
     for (int j = 0; j < 5; j++) {
         reels[j].iterateOnce();
+        totalSpinsLeft += reels[j].getSpinsLeft();
     }
+    slotsRunning = totalSpinsLeft > 0; //If no more spins are left, stop from running
+}
+
+int checkWins() {
+    //TODO: Check for wins
+    return -1;
 }

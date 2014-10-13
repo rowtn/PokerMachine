@@ -53,12 +53,16 @@ start:
 /* Method overviews can be found at the top of the file */
 void display() {
     cout << endl;
+    cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
+    cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
+    
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 5; j++) {
-            PokerCard card = reels[j].getCards().at(i);                             //Originally I was using std::list.
-            cout << " |" << card.getId() << " | " << char(card.getSuit()) << "|";   //however that did not allow for getting an element at a particular index
+            PokerCard card = reels[j].getCards().at(i);    
+            //TODO: Make output prettier                                            //Originally I was using std::list.
+            cout << " |" << char(card.getSuit()) << " " << card.getId() << "|\t";   //however that did not allow for getting an element at a particular index
         }                                                                           //Switching to std::vector allowed usage of std::vector#at(int) in order to achieve this
-        cout << endl;                                                               //Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
+        cout << endl << endl;                                                       //Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
     }
     for (int i = 0; i < 5; i++) {
         cout << "   " << reels[i].getSpinsLeft() << "    ";
@@ -87,12 +91,16 @@ void gameloop() {
 
 int checkWins() {
     //TODO: Check for wins
+
+    /* Create vectors holding horizontal lines */
+    clock_t t = clock(); //Used for debug
     vector<PokerCard> lineOne, lineTwo, lineThree;
     for (int i = 0; i < 5; i++) {
         lineOne.push_back(reels[i].getCards().at(0));
         lineTwo.push_back(reels[i].getCards().at(1));
         lineThree.push_back(reels[i].getCards().at(2));
     }
+    cout << endl << " " << clock() - t << "ms taken for assignment." << endl;
     for (int i = 0; i < 5; i++) {
         cout << lineOne.at(i).getId() << "       ";
     }

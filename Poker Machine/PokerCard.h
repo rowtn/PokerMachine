@@ -8,7 +8,7 @@
 
 const int SPADES = 6, HEARTS = 3, CLUBS = 5, DIAMONDS = 4;
 
-const char ACE = 'A', NINE = 'N', TEN = 'T', JACK = 'J', QUEEN = 'Q', KING = 'K', JOKER = 'j';
+const char ACE = 'A', NINE = '9', TEN = 'X', JACK = 'J', QUEEN = 'Q', KING = 'K', JOKER = char(1) /* smiley face */;
 const char possibleChars[7] = { ACE, NINE, TEN, JACK, QUEEN, KING, JOKER };
 
 class PokerCard {

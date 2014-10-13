@@ -87,5 +87,22 @@ void gameloop() {
 
 int checkWins() {
     //TODO: Check for wins
+    vector<PokerCard> lineOne, lineTwo, lineThree;
+    for (int i = 0; i < 5; i++) {
+        lineOne.push_back(reels[i].getCards().at(0));
+        lineTwo.push_back(reels[i].getCards().at(1));
+        lineThree.push_back(reels[i].getCards().at(2));
+    }
+    for (int i = 0; i < 5; i++) {
+        cout << lineOne.at(i).getId() << "       ";
+    }
+    cout << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << lineTwo.at(i).getId() << "       ";
+    }
+    cout << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << lineThree.at(i).getId() << "       ";
+    }
     return -1;
 }

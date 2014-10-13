@@ -14,9 +14,20 @@ void Reel::repopulateReel() {
     for (int i = 15; i > 0; --i) { //Some say that -- is faster than ++
         reelCards.push_back(PokerCard::random()); //Uses statics to generate a new valid card
     }
+    spins = rand() % 10 + 10; //amount of spins to do after last spinner has finished
 }
 
 void Reel::iterateOnce() {
+    if (spins <= 0) return; //if there are no remaining spins, do nothing
     reelCards.insert(reelCards.begin(), reelCards.back()); //Makes the last element the first
     reelCards.pop_back(); //Removes the first element from list
+    spins--;
+}
+
+int Reel::getSpinsLeft() {
+    return spins;
+}
+
+void Reel::setSpins(int s) {
+    spins = s;
 }

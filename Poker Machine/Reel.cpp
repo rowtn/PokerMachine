@@ -17,6 +17,6 @@ void Reel::repopulateReel() {
 }
 
 void Reel::iterateOnce() {
-    reelCards.push_front(reelCards.back()); //Makes the last element the first
+    reelCards.insert(reelCards.begin(), reelCards.back()); //Makes the last element the first
     reelCards.pop_back(); //Removes the first element from list
 }

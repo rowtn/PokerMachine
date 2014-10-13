@@ -5,6 +5,7 @@
 #include "PokerCard.h"
 #include "Reel.h"
 #include <Windows.h>
+#include <vector>
 
 using namespace std;
 
@@ -19,13 +20,13 @@ int _tmain(int argc, _TCHAR* argv[]) {
     srand(time(0));
     system("color a");
     Reel reel = Reel();
-    list<PokerCard> reelCards;
+    vector<PokerCard> reelCards;
     while (true) {
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
         display();
-        Sleep(100);
+        Sleep(200);
     }
     system("pause");
 	return 0;
@@ -33,18 +34,12 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
 void display() {
     cout << endl;
-    for (int j = 0; j < 5; j++) {
-        Reel reel = reels[j];
-        list<PokerCard> reelCards = reel.getCards();
-        list<PokerCard>::iterator it;
-        int i, x = j * 9; //used to only display only 3 cards of the reel at any given time. int j is a cached value
-        //used for ensuring horizontal display. (Not caching it would mean that the same calculation is carried out
-        //multiple times redundantly
-        for (i = 0, it = reelCards.begin(); i < 3 && it != reelCards.end(); i++, ++it) {
-            COORD position = { x, i };
-            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position); //This line and the one above allows me to output the cards horizontally.
-            cout << " |" << it->getId() << " | " << char(it->getSuit()) << "|" << endl; //This was the simplest and most effecient solution as std::list does not have 
-        }                                                                               //the capability to get a specific value at an index
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 5; j++) {
+            PokerCard card = reels[j].getCards().at(i);                             //Originally I was using std::list.
+            cout << " |" << card.getId() << " | " << char(card.getSuit()) << "|";   //t, however that did not allow for getting an element at a particular index
+        }                                                                           //Switching to std::vector allowed usage of std::vector#at(int) in order to achieve this
+        cout << endl;                                                               //Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
     }
 }
 

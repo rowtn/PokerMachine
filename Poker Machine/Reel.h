@@ -1,16 +1,16 @@
 #pragma once
 
 #include "PokerCard.h"
-#include <list>
+#include <vector>
 
 class Reel {
 private:
-    std::list<PokerCard> reelCards;
+    std::vector<PokerCard> reelCards;
 public:
     Reel(); //constructor
     ~Reel(); //destructor
 
-    std::list<PokerCard> getCards() {
+    std::vector<PokerCard> getCards() {
         return reelCards;
     }
     void repopulateReel(); //Fill reelCards with random cards

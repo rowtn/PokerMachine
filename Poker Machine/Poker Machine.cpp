@@ -6,6 +6,7 @@
 #include "Reel.h"
 #include <Windows.h>
 #include <vector>
+#include <time.h>
 
 using namespace std;
 
@@ -21,7 +22,9 @@ int _tmain(int argc, _TCHAR* argv[]) {
     system("color a");
     init();
     while (true) {
-        int startTime = time(0);
+        clock_t t;
+        t = clock();
+        
         /*
             The following two lines are used for clearing the screen.
             It puts the system cursor at the start of the screen,
@@ -34,7 +37,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
         display();
-        cout << endl << " " << time(0) - startTime << "ms taken for iteration." << endl;
+        cout << endl << " " << clock() - t << "ms taken for iteration." << endl;
         Sleep(100);
     }
     system("pause");
@@ -52,7 +55,7 @@ void display() {
         cout << endl;                                                               //Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
     }
     for (int i = 0; i < 5; i++) {
-        cout << " " << reels[i].getSpinsLeft() << "      ";
+        cout << "  " << reels[i].getSpinsLeft() << "      ";
     }
 }
 

@@ -16,5 +16,7 @@ private:
 public:
     PokerCard(char, Suit);
     bool operator==(PokerCard& a);
-    PokerCard random();
+    static PokerCard random(); //static method so new card can be generated without needing an instance
+    char getId();
+    Suit getSuit();
 };

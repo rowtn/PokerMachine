@@ -26,3 +26,11 @@ PokerCard PokerCard::random() {
     Suit s = static_cast<Suit>(rand() % DIAMONDS);
     return PokerCard(possibleChars[rand() % 7], s);
 }
+
+char PokerCard::getId() {
+    return id;
+}
+
+Suit PokerCard::getSuit() {
+    return suit;
+}

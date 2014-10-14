@@ -3,9 +3,9 @@
 
 using namespace std;
 
+//Originally the main function
 PokerGame::PokerGame() {
-
-    system("color a");
+    system("color 6");
 start:
     slotsRunning = true;
     system("cls");
@@ -49,10 +49,10 @@ void PokerGame::display() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 5; j++) {
             if (i == 0 || i == 2) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
             }
             else {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 'd');
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
             }
             PokerCard card = reels[j].getCards().at(i);
             //TODO: Make output prettier  
@@ -116,10 +116,11 @@ int PokerGame::checkWins() {
             straightA = false;
         }
         if (it + 1 != lineTwo.end() && (it + 1)->getIdIndex() > it->getIdIndex() || it->getId() == JOKER) {
-            straightA = false;
+            straightB = false;
         }
     }
     bool straight = straightA || straightB; //if either straights are present, => win straight
+    cout << straightA << straightB << endl;
     cout << "Straight: " << straight << endl;
     winnings = straight && 12 > winnings ? 12 : winnings;
     /* Check for * of a kind */

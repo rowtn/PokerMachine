@@ -27,10 +27,8 @@ start:
         cout << endl << " " << clock() - t << "ms taken for iteration." << endl;
         display();
         cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
-        while (clock() - t < 100)
-        {
-            //md_5
-        }
+        //This pauses the thread for 100 milliseconds since the last iteration
+        while (clock() - t < 100) { /* Empty */}
     }
     checkWins();
     cout << "Press any key to play again!" << endl;
@@ -50,8 +48,7 @@ void PokerGame::display() {
         for (int j = 0; j < 5; j++) {
             if (i == 0 || i == 2) {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
-            }
-            else {
+            } else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
             }
             PokerCard card = reels[j].getCards().at(i);

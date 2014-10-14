@@ -3,7 +3,7 @@
 /* Prototypes */
 
 /*enum Suit {
-    SPADES = 6, HEARTS = 3, CLUBS = 5, DIAMONDS = 4 //The numbers correlate to ascii codes (♠ ♥ ♣ ♦)
+SPADES = 6, HEARTS = 3, CLUBS = 5, DIAMONDS = 4 //The numbers correlate to ascii codes (♠ ♥ ♣ ♦)
 };*/
 
 const int SPADES = 6, HEARTS = 3, CLUBS = 5, DIAMONDS = 4;

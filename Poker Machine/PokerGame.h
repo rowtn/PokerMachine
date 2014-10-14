@@ -14,9 +14,12 @@ private:
     bool slotsRunning = true;
 public:
     PokerGame();
-    /* Method prototypes */
-    void display(void);     //display cards on screen
-    void init(void);        //initialize slot machine
-    void gameloop(void);    //calculations to be done every frame
-    int checkWins(void);    //Checks for wins, returns credits won
+    //display cards on screen
+    void display(void);
+    //initialize slot machine
+    void init(void);
+    //calculations to be done every frame
+    void gameloop(void);
+    //Checks for wins, returns credits won
+    int checkWins(void);
 };

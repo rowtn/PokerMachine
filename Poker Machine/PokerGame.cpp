@@ -117,7 +117,7 @@ int PokerGame::checkWins() {
         }
     }
     bool straight = straightA || straightB; //if either straights are present, => win straight
-    straight = straightB; //TODO: Cleanup 
+    straight = straightB; //TODO: Cleanup
     cout << straightA << straightB << endl;
     cout << "Straight: " << straight << endl;
     winnings = straight && 12 > winnings ? 12 : winnings;

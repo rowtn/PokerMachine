@@ -7,8 +7,9 @@
     @param x the card type (e.g. ACE, KINGS)
     @param  y the suit of the card
 */
-PokerCard::PokerCard(char x, int y) {
-    id = x;
+PokerCard::PokerCard(int x, int y) {
+    idIndex = x;
+    id = possibleChars[idIndex];
     suit = y;
 }
 
@@ -38,7 +39,7 @@ PokerCard PokerCard::random() {
         s = CLUBS;
         break;
     }
-    return PokerCard(possibleChars[rand() % 7], s);
+    return PokerCard(rand() % 7, s);
 }
 
 char PokerCard::getId() {
@@ -47,4 +48,8 @@ char PokerCard::getId() {
 
 int PokerCard::getSuit() {
     return suit;
+}
+
+int PokerCard::getIdIndex() {
+    return idIndex;
 }

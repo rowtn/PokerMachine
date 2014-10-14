@@ -7,7 +7,7 @@
 #include <Windows.h>
 #include <vector>
 #include <time.h>
-#include <hash_map>
+#include <map>
 
 using namespace std;
 
@@ -16,6 +16,8 @@ void display(void);     //display cards on screen
 void init(void);        //initialize slot machine
 void gameloop(void);    //calculations to be done every frame
 int checkWins(void);    //Checks for wins, returns credits won
+
+const int WIN_STRAIGHT_TWO = 10, WIN_STRAIGHT_THREE = 15;
 
 Reel reels[5];
 bool slotsRunning = true;
@@ -56,6 +58,7 @@ start:
 }
 
 /* Method overviews can be found at the top of the file */
+
 void display() {
     cout << endl;
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
@@ -101,13 +104,14 @@ void init() {
 void gameloop() {
     int totalSpinsLeft = 0;
     for (int j = 0; j < 5; j++) {
-        reels[j].iterateOnce();
+        reels[j].iterateOnce(); //'Spin' the reel. See Reel.cpp for definition
         totalSpinsLeft += reels[j].getSpinsLeft();
     }
     slotsRunning = totalSpinsLeft > 0; //If no more spins are left, stop from running
 }
 
 int checkWins() {
+    int winnings = 0;
     //TODO: Check for wins
 
     /* Create vectors holding horizontal lines */
@@ -116,9 +120,52 @@ int checkWins() {
     for (int i = 0; i < 5; i++) {
         lineOne.push_back(reels[i].getCards().at(0));
         lineTwo.push_back(reels[i].getCards().at(1));
+        //lineTwo.push_back(PokerCard(i + 1, 1)); [Debug used to check for straights]
         lineThree.push_back(reels[i].getCards().at(2));
     }
-    cout << endl << " " << clock() - t << "ms taken for horizontal list assignment." << endl;
+    /* Count the cards, check for straights */
+    map<char, int> cardCount;
+    bool straight = true;
+    for (vector<PokerCard>::iterator it = lineTwo.begin(); it != lineTwo.end(); ++it) {
+        cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
+        //Checks if the next card along has a greater index (value) than the current
+        //Also checks if there is a next iteration possible to avoid errors
+        if (it + 1 != lineTwo.end() && (!((it + 1)->getIdIndex() > it->getIdIndex()) || (it + 1)->getIdIndex() == it->getIdIndex())) {
+            straight = false;
+        }
+    }
+    winnings = straight ? 12 : winnings;
+    /* Check for * of a kind */
+    int jokers = cardCount[JOKER];
+    for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {
+        if (it->first != JOKER) it->second += jokers; //Jokers count as any cards, so each count is increased by one
+        switch (it->second) {
+        //TODO Change int literals to const ints declared at top of file
+        case 5:
+            //Five of a kind
+            cout << it->first << ": 5oaK" << endl;
+            winnings = 15 > winnings ? 15 : winnings;
+            break;
+        case 4:
+            //Four of a kind
+            cout << it->first << ": 4oaK" << endl;
+            winnings = 6 > winnings ? 6 : winnings;
+            break;
+        case 3:
+            cout << it->first << ": 3oaK" << endl;
+            winnings = 3 > winnings ? 3 : winnings;
+            break;
+        case 2:
+            cout << it->first << ": 2oaK" << endl;
+            winnings = 1 > winnings ? 1 : winnings;
+            break;
+        }
+    }
 
+    /* Note: the order in which the different times of wins are detected are irrelevant as I am ensuring only the highest payout is paid */
+
+    cout << endl << " " << clock() - t << "ms taken for winnings check." << endl;
+
+    cout << "Total winnings for this round = " << winnings << endl;
     return -1;
 }

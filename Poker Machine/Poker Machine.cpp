@@ -7,6 +7,7 @@
 #include <Windows.h>
 #include <vector>
 #include <time.h>
+#include <hash_map>
 
 using namespace std;
 
@@ -39,9 +40,13 @@ start:
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
-        display();
         cout << endl << " " << clock() - t << "ms taken for iteration." << endl;
-        Sleep(100);
+        display();
+        cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
+        while ( clock( ) - t < 100 ) 
+        {
+            //md_5
+        }
     }
     checkWins();
     cout << "Press any key to play again!" << endl;
@@ -54,15 +59,28 @@ start:
 void display() {
     cout << endl;
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
-    cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
+    cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl << endl;
     
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 5; j++) {
+            if (i == 0 || i == 2) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
+            }
+            else {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+            }
             PokerCard card = reels[j].getCards().at(i);    
-            //TODO: Make output prettier                                            //Originally I was using std::list.
-            cout << " |" << char(card.getSuit()) << " " << card.getId() << "|\t";   //however that did not allow for getting an element at a particular index
-        }                                                                           //Switching to std::vector allowed usage of std::vector#at(int) in order to achieve this
-        cout << endl << endl;                                                       //Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
+            //TODO: Make output prettier  
+            /*
+                Originally I was using std::list.
+                however that did not allow for getting an element at a particular index
+                Switching to std::vector allowed usage of std::vector#at(int) in order to achieve this
+                Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
+            */                                                                 
+            cout << " |" << char(card.getSuit()) << " " << card.getId() << "|\t";   
+        }
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+        cout << endl << endl;                                                       
     }
     for (int i = 0; i < 5; i++) {
         cout << "   " << reels[i].getSpinsLeft() << "    ";
@@ -100,17 +118,7 @@ int checkWins() {
         lineTwo.push_back(reels[i].getCards().at(1));
         lineThree.push_back(reels[i].getCards().at(2));
     }
-    cout << endl << " " << clock() - t << "ms taken for assignment." << endl;
-    for (int i = 0; i < 5; i++) {
-        cout << lineOne.at(i).getId() << "       ";
-    }
-    cout << endl;
-    for (int i = 0; i < 5; i++) {
-        cout << lineTwo.at(i).getId() << "       ";
-    }
-    cout << endl;
-    for (int i = 0; i < 5; i++) {
-        cout << lineThree.at(i).getId() << "       ";
-    }
+    cout << endl << " " << clock() - t << "ms taken for horizontal list assignment." << endl;
+
     return -1;
 }

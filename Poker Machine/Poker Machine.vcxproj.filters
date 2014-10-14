@@ -30,6 +30,9 @@
     <ClInclude Include="Reel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PokerGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Reel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PokerGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,4 +10,3 @@ int _tmain(int argc, _TCHAR* argv[]) {
     PokerGame();
 	return 0;
 }
-

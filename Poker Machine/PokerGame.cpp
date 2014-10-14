@@ -52,7 +52,7 @@ void PokerGame::display() {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
             }
             else {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 'd');
             }
             PokerCard card = reels[j].getCards().at(i);
             //TODO: Make output prettier  
@@ -93,7 +93,7 @@ void PokerGame::gameloop() {
 }
 
 int PokerGame::checkWins() {
-    int winnings = 0;
+    int winnings = -1; //by default, lose 1 credit
     //TODO: Check for wins
 
     /* Create vectors holding horizontal lines */
@@ -102,21 +102,26 @@ int PokerGame::checkWins() {
     for (int i = 0; i < 5; i++) {
         lineOne.push_back(reels[i].getCards().at(0));
         lineTwo.push_back(reels[i].getCards().at(1));
-        //lineTwo.push_back(PokerCard(i + 1, 1)); [Debug used to check for straights]
+        //lineTwo.push_back(PokerCard(7 - i + 1, 1));// [Debug used to check for straights]
         lineThree.push_back(reels[i].getCards().at(2));
     }
     /* Count the cards, check for straights */
     map<char, int> cardCount;
-    bool straight = true;
+    bool straightA = true, straightB = true; //Used to detect straights from ltr and rtl
     for (vector<PokerCard>::iterator it = lineTwo.begin(); it != lineTwo.end(); ++it) {
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
-        //Checks if the next card along has a greater index (value) than the current
+        //Checks if the next card along has a greater index (value)than the current (or if the card is a joker)
         //Also checks if there is a next iteration possible to avoid errors
-        if (it + 1 != lineTwo.end() && !(it + 1)->getIdIndex() > it->getIdIndex()) {
-            straight = false;
+        if (it + 1 != lineTwo.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
+            straightA = false;
+        }
+        if (it + 1 != lineTwo.end() && (it + 1)->getIdIndex() > it->getIdIndex() || it->getId() == JOKER) {
+            straightA = false;
         }
     }
-    winnings = straight ? 12 : winnings;
+    bool straight = straightA || straightB; //if either straights are present, => win straight
+    cout << "Straight: " << straight << endl;
+    winnings = straight && 12 > winnings ? 12 : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
     for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {

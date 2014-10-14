@@ -130,7 +130,7 @@ int checkWins() {
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
         //Checks if the next card along has a greater index (value) than the current
         //Also checks if there is a next iteration possible to avoid errors
-        if (it + 1 != lineTwo.end() && (!((it + 1)->getIdIndex() > it->getIdIndex()) || (it + 1)->getIdIndex() == it->getIdIndex())) {
+        if (it + 1 != lineTwo.end() && !(it + 1)->getIdIndex() > it->getIdIndex()) {
             straight = false;
         }
     }

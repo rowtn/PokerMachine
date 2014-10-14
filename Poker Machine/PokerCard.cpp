@@ -50,6 +50,7 @@ int PokerCard::getSuit() {
     return suit;
 }
 
+//Used for detecting straights
 int PokerCard::getIdIndex() {
     return idIndex;
 }

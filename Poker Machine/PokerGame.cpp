@@ -99,28 +99,22 @@ int PokerGame::checkWins() {
     for (int i = 0; i < 5; i++) {
         lineOne.push_back(reels[i].getCards().at(0));
         lineTwo.push_back(reels[i].getCards().at(1));
-        //lineTwo.push_back(PokerCard(7 - i + 1, 1));// [Debug used to check for straights]
+        //lineTwo.push_back(PokerCard(i + 2, 1));// [Debug used to check for straights]
         lineThree.push_back(reels[i].getCards().at(2));
     }
     /* Count the cards, check for straights */
     map<char, int> cardCount;
-    bool straightA = true, straightB = true; //Used to detect straights from ltr and rtl
+    bool straight = true; //Used to detect straights from ltr and rtl
     for (vector<PokerCard>::iterator it = lineTwo.begin(); it != lineTwo.end(); ++it) {
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
         //Checks if the next card along has a greater index (value)than the current (or if the card is a joker)
         //Also checks if there is a next iteration possible to avoid errors
         if (it + 1 != lineTwo.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
-            straightA = false;
-        }
-        if (it + 1 != lineTwo.end() && (it + 1)->getIdIndex() > it->getIdIndex() || it->getId() == JOKER) {
-            straightB = false;
+            straight = false;
         }
     }
-    bool straight = straightA || straightB; //if either straights are present, => win straight
-    straight = straightB; //TODO: Cleanup
-    cout << straightA << straightB << endl;
     cout << "Straight: " << straight << endl;
-    winnings = straight && 12 > winnings ? 12 : winnings;
+    winnings = straight && STRAIGHT > winnings ? STRAIGHT : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
     for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {
@@ -130,22 +124,27 @@ int PokerGame::checkWins() {
         case 5:
             //Five of a kind
             cout << it->first << ": 5oaK" << endl;
-            winnings = 15 > winnings ? 15 : winnings;
+            winnings = FIVE_K > winnings ? FIVE_K : winnings;
             break;
         case 4:
             //Four of a kind
             cout << it->first << ": 4oaK" << endl;
-            winnings = 6 > winnings ? 6 : winnings;
+            winnings = FOUR_K > winnings ? FOUR_K : winnings;
             break;
         case 3:
             cout << it->first << ": 3oaK" << endl;
-            winnings = 3 > winnings ? 3 : winnings;
+            winnings = THREE_K > winnings ? THREE_K : winnings;
             break;
         case 2:
             cout << it->first << ": 2oaK" << endl;
-            winnings = 1 > winnings ? 1 : winnings;
+            winnings = TWO_K > winnings ? TWO_K : winnings;
             break;
         }
+    }
+
+    /* For Each */
+    for (auto &card : lineTwo) {
+        cout << "    " << card.getId() << " ";
     }
 
     /* Note: the order in which the different times of wins are detected are irrelevant as I am ensuring only the highest payout is paid */

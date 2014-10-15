@@ -8,6 +8,8 @@
 #include <time.h>
 #include <map>
 
+const int TWO_K = 0, THREE_K = 1, FOUR_K = 5, FIVE_K = 25, STRAIGHT = 10, IO_R_FLUSH = 85, UO_R_FLUSH = 4;
+
 class PokerGame {
 private:
     Reel reels[5];

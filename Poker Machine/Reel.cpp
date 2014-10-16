@@ -31,3 +31,7 @@ int Reel::getSpinsLeft() {
 void Reel::setSpins(int s) {
     spins = s;
 }
+
+void Reel::reInit() {
+    spins = rand() % 10 + 10;
+}

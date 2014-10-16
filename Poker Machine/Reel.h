@@ -14,9 +14,11 @@ public:
     std::vector<PokerCard> getCards() {
         return reelCards;
     }
-    void repopulateReel(); //Fill reelCards with random cards
-    void iterateOnce(); //Effectively rotates the reel (unless spins <= 0)
-    int getSpinsLeft();
+
+    void reInit(void);
+    void repopulateReel(void); //Fill reelCards with random cards
+    void iterateOnce(void); //Effectively rotates the reel (unless spins <= 0)
+    int getSpinsLeft(void);
     void setSpins(int);
 };
 

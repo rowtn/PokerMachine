@@ -6,11 +6,11 @@ using namespace std;
 //Originally the main function
 PokerGame::PokerGame() {
     system("color 6");
+    init();
 start:
     slotsRunning = true;
     system("cls");
     srand(time(0));
-    init();
     while (slotsRunning) {
         clock_t t = clock(); //Used for debug
         /*
@@ -33,6 +33,7 @@ start:
     checkWins();
     cout << "Press any key to play again!" << endl;
     system("pause>nul");
+    resetReels();
     goto start;
 
 }
@@ -153,4 +154,16 @@ int PokerGame::checkWins() {
 
     cout << "Total winnings for this round = " << winnings << endl;
     return -1;
+}
+
+/* almost exactly the same as PokerGame::init(), just allows me to reuse the reels, a more realistic slot machine mechanism if you will. */
+void PokerGame::resetReels() {
+    for (int i = 0; i < 5; i++) {
+        reels[i].reInit();
+    }
+    reels[0].setSpins(reels[0].getSpinsLeft() + 30);
+    for (int i = 0; i < 4; i++) {
+        int previous = reels[i].getSpinsLeft();
+        reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());
+    }
 }

@@ -20,6 +20,8 @@ public:
     void display(void);
     //initialize slot machine
     void init(void);
+    //resets the reels for another round
+    void resetReels(void);
     //calculations to be done every frame
     void gameloop(void);
     //Checks for wins, returns credits won

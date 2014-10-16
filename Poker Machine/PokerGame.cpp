@@ -5,7 +5,7 @@ using namespace std;
 
 //Originally the main function
 PokerGame::PokerGame() {
-    system("color 6");
+    system("color 2");
     init();
 start:
     slotsRunning = true;
@@ -43,16 +43,19 @@ start:
 void PokerGame::display() {
     cout << endl;
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
-    cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl << endl;
+    cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
 
     for (int i = 0; i < 3; i++) {
+        string bar;
+        if (i == 0) {
+            bar = { char(201), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(187) };
+        } else if (i == 1 || i == 2) {
+            bar = { char(204), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(185) };
+        }
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), PURPLE);
+        cout << endl << "\t" << bar << endl;
+        cout << "\t";
         for (int j = 0; j < 5; j++) {
-            if (i == 0 || i == 2) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
-            } else {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
-            }
-            PokerCard card = reels[j].getCards().at(i);
             //TODO: Make output prettier  
             /*
             Originally I was using std::list.
@@ -60,14 +63,38 @@ void PokerGame::display() {
             Switching to std::vector allowed usage of std::vector#at(int) in order to achieve this
             Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
             */
+            /*
+            if (i == 0 || i == 2) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+            } else {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
+            }
+            PokerCard card = reels[j].getCards().at(i);
+
             cout << " |" << char(card.getSuit()) << " " << card.getId() << "|\t";
+            */
+            //Start display
+            PokerCard card = reels[j].getCards().at(i);
+            if (i == 1) { //Middle row
+                print(char(186), PURPLE);
+                print(char(card.getSuit()), card.getSuit() == SPADES || card.getSuit() == CLUBS ? LIGHT_AQUA : RED);
+                print(" ", BLACK);
+                print(card.getId(), YELLOW);
+                if (j == 4) print(char(186), PURPLE);
+            } else { //Top and bottom row
+                print(char(186), PURPLE);
+                print(char(card.getSuit()), card.getSuit() == SPADES || card.getSuit() == CLUBS ? DARK_AQUA : DARK_RED);
+                print(" ", BLACK);
+                print(card.getId(), DARK_GREY);
+                if (j == 4) print(char(186), PURPLE);
+            }
         }
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
-        cout << endl << endl;
     }
-    for (int i = 0; i < 5; i++) {
-        cout << "   " << reels[i].getSpinsLeft() << "    ";
-    }
+    string bar = { char(200), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(188) };
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), PURPLE);
+    cout << endl << "\t" << bar << endl;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREY);
+    cout << endl;
 }
 
 void PokerGame::init() {
@@ -166,4 +193,14 @@ void PokerGame::resetReels() {
         int previous = reels[i].getSpinsLeft();
         reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());
     }
+}
+
+void PokerGame::print(char* s, Colour c) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+    cout << s;
+}
+
+void PokerGame::print(char s, Colour c) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+    cout << s;
 }

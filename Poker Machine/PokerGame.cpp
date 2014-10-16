@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "PokerGame.h"
+#include <thread>
 
 using namespace std;
 
 //Originally the main function
 PokerGame::PokerGame() {
-    system("color 2");
     init();
 start:
     slotsRunning = true;
@@ -24,7 +24,7 @@ start:
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
-        cout << endl << " " << clock() - t << "ms taken for iteration." << endl;
+        cout << endl << " " << clock() - t << "ms taken for iteration.  " << endl;
         display();
         cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
         //This pauses the thread for 100 milliseconds since the last iteration
@@ -114,6 +114,7 @@ void PokerGame::gameloop() {
         reels[j].iterateOnce(); //'Spin' the reel. See Reel.cpp for definition
         totalSpinsLeft += reels[j].getSpinsLeft();
     }
+    thread(Beep, totalSpinsLeft * 7 + 500, 50).detach(); //sound decsending in pitch as game nears end
     slotsRunning = totalSpinsLeft > 0; //If no more spins are left, stop from running
 }
 

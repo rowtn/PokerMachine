@@ -35,3 +35,7 @@ void Reel::setSpins(int s) {
 void Reel::reInit() {
     spins = rand() % 10 + 10;
 }
+
+std::vector<PokerCard> Reel::getCards() {
+    return reelCards;
+}

@@ -178,7 +178,7 @@ int PokerGame::checkWins() {
     if (DEBUG) cout << endl << " " << clock() - t << "ms taken for winnings check." << endl;
 
     cout << "Total winnings for this round = " << winnings << endl;
-    if (winnings > 0) printRainbow("YOU WIN!\t");
+    if (winnings > 0) printRainbow("YOU WIN!\n");
     return winnings;
 }
 

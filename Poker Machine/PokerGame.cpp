@@ -6,6 +6,7 @@ using namespace std;
 
 //Originally the main function
 PokerGame::PokerGame() {
+    system("title Pokies");
     init();
 start:
     slotsRunning = true;
@@ -24,14 +25,14 @@ start:
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
-        cout << endl << " " << clock() - t << "ms taken for iteration.  " << endl;
+        if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration.  " << endl;
         display();
-        cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
+        if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
         //This pauses the thread for 100 milliseconds since the last iteration
         while (clock() - t < 100) { /* Empty */}
     }
     checkWins();
-    cout << "Press any key to play again!" << endl;
+    print("Press any key to play again!", LIGHT_GREY);
     system("pause>nul");
     resetReels();
     goto start;
@@ -122,8 +123,8 @@ int PokerGame::checkWins() {
     clock_t t = clock(); //Used for debug
     vector<PokerCard> mainHorzLine;
     for (int i = 0; i < 5; i++) {
-        mainHorzLine.push_back(reels[i].getCards().at(1));
-        //mainHorzLine.push_back(PokerCard(i + 2, 1));// [Debug used to check for straights]
+        if (!DEBUG) mainHorzLine.push_back(reels[i].getCards().at(1));
+        else mainHorzLine.push_back(PokerCard(i + 2, 1));// [Debug used to check for straights]
     }
     /* Count the cards, check for straights */
     map<char, int> cardCount;
@@ -136,7 +137,7 @@ int PokerGame::checkWins() {
             straight = false;
         }
     }
-    cout << "Straight: " << straight << endl;
+    if (DEBUG) cout << "Straight: " << straight << endl;
     winnings = straight && STRAIGHT > winnings ? STRAIGHT : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
@@ -146,36 +147,39 @@ int PokerGame::checkWins() {
             //TODO Change int literals to const ints declared at top of file
         case 5:
             //Five of a kind
-            cout << it->first << ": 5oaK" << endl;
+            if (DEBUG) cout << it->first << ": 5oaK" << endl;
             winnings = FIVE_K > winnings ? FIVE_K : winnings;
             break;
         case 4:
             //Four of a kind
-            cout << it->first << ": 4oaK" << endl;
+            if (DEBUG) cout << it->first << ": 4oaK" << endl;
             winnings = FOUR_K > winnings ? FOUR_K : winnings;
             break;
         case 3:
-            cout << it->first << ": 3oaK" << endl;
+            if (DEBUG) cout << it->first << ": 3oaK" << endl;
             winnings = THREE_K > winnings ? THREE_K : winnings;
             break;
         case 2:
-            cout << it->first << ": 2oaK" << endl;
+            if (DEBUG) cout << it->first << ": 2oaK" << endl;
             winnings = TWO_K > winnings ? TWO_K : winnings;
             break;
         }
     }
 
     /* For Each */
-    for (auto &card : mainHorzLine) {
-        cout << "    " << card.getId() << " ";
+    if (DEBUG) {
+        for (auto &card : mainHorzLine) {
+            cout << "    " << card.getId() << " ";
+        }
     }
 
     /* Note: the order in which the different times of wins are detected are irrelevant as I am ensuring only the highest payout is paid */
 
-    cout << endl << " " << clock() - t << "ms taken for winnings check." << endl;
+    if (DEBUG) cout << endl << " " << clock() - t << "ms taken for winnings check." << endl;
 
     cout << "Total winnings for this round = " << winnings << endl;
-    return -1;
+    if (winnings > 0) printRainbow("YOU WIN!\t");
+    return winnings;
 }
 
 /* almost exactly the same as PokerGame::init(), just allows me to reuse the reels, a more realistic slot machine mechanism if you will. */
@@ -198,4 +202,12 @@ void PokerGame::print(char* s, Colour c) {
 void PokerGame::print(char s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
     cout << s;
+}
+
+void PokerGame::printRainbow(std::string output) {
+    int count = 0;
+    for (auto &c : output) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10);
+        cout << c;
+    }
 }

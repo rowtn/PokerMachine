@@ -10,6 +10,7 @@
 #include <string>
 
 const int TWO_K = 0, THREE_K = 1, FOUR_K = 5, FIVE_K = 25, STRAIGHT = 10, IO_R_FLUSH = 85, UO_R_FLUSH = 4;
+const bool DEBUG = false;
 
 enum Colour {
     BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, PURPLE, GOLD, LIGHT_GREY, DARK_GREY, BLUE, LIGHT_GREEN, LIGHT_AQUA, RED, PINK, YELLOW
@@ -36,4 +37,5 @@ public:
     //print text with colour.
     void print(char *, Colour);
     void print(char, Colour);
+    void printRainbow(std::string);
 };

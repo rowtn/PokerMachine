@@ -46,6 +46,9 @@ void PokerGame::display() {
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
 
     for (int i = 0; i < 3; i++) {
+        //You cannot have fancy ASCII characters in string literals. When compiled, it outputs as '?'.
+        //To avoid this, you must construct an array of the characters. The number passed to the contructor
+        //is an ASCII code. @source http://asciitable.com/
         string bar;
         if (i == 0) {
             bar = { char(201), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(187) };
@@ -56,27 +59,20 @@ void PokerGame::display() {
         cout << endl << "\t" << bar << endl;
         cout << "\t";
         for (int j = 0; j < 5; j++) {
-            //TODO: Make output prettier  
             /*
             Originally I was using std::list.
             however that did not allow for getting an element at a particular index
             Switching to std::vector allowed usage of std::vector#at(int) in order to achieve this
             Old method can be viewed in the Git history (commit af15a6130da8e4e52e8c2dada8dbf4889930cd86)
             */
-            /*
-            if (i == 0 || i == 2) {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
-            } else {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
-            }
+            //Output data onto screen in a user-friendly mannor.
             PokerCard card = reels[j].getCards().at(i);
-
-            cout << " |" << char(card.getSuit()) << " " << card.getId() << "|\t";
-            */
-            //Start display
-            PokerCard card = reels[j].getCards().at(i);
-            if (i == 1) { //Middle row
+            if (i == 1) { //Middle row. This row uses a slightly different colour scheme to highlight it
+                //print is a function defined at the bottom of the file.
+                //It will take in a string or char and cout it with the specified colour
                 print(char(186), BORDER_COLOUR);
+                //ternary operators are used here to colourise the suit when displaying
+                //SPADES and CLUBS are aqua, and HEARTS and DIAMONDS are red.
                 print(char(card.getSuit()), card.getSuit() == SPADES || card.getSuit() == CLUBS ? LIGHT_AQUA : RED);
                 print(" ", BLACK);
                 print(card.getId(), YELLOW);
@@ -124,21 +120,19 @@ int PokerGame::checkWins() {
 
     /* Create vectors holding horizontal lines */
     clock_t t = clock(); //Used for debug
-    vector<PokerCard> lineOne, lineTwo, lineThree;
+    vector<PokerCard> mainHorzLine;
     for (int i = 0; i < 5; i++) {
-        lineOne.push_back(reels[i].getCards().at(0));
-        lineTwo.push_back(reels[i].getCards().at(1));
-        //lineTwo.push_back(PokerCard(i + 2, 1));// [Debug used to check for straights]
-        lineThree.push_back(reels[i].getCards().at(2));
+        mainHorzLine.push_back(reels[i].getCards().at(1));
+        //mainHorzLine.push_back(PokerCard(i + 2, 1));// [Debug used to check for straights]
     }
     /* Count the cards, check for straights */
     map<char, int> cardCount;
     bool straight = true; //Used to detect straights from ltr and rtl
-    for (vector<PokerCard>::iterator it = lineTwo.begin(); it != lineTwo.end(); ++it) {
+    for (vector<PokerCard>::iterator it = mainHorzLine.begin(); it != mainHorzLine.end(); ++it) {
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
         //Checks if the next card along has a greater index (value)than the current (or if the card is a joker)
         //Also checks if there is a next iteration possible to avoid errors
-        if (it + 1 != lineTwo.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
+        if (it + 1 != mainHorzLine.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
             straight = false;
         }
     }
@@ -172,7 +166,7 @@ int PokerGame::checkWins() {
     }
 
     /* For Each */
-    for (auto &card : lineTwo) {
+    for (auto &card : mainHorzLine) {
         cout << "    " << card.getId() << " ";
     }
 

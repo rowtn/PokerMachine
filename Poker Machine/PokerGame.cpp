@@ -52,7 +52,7 @@ void PokerGame::display() {
         } else if (i == 1 || i == 2) {
             bar = { char(204), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(185) };
         }
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), PURPLE);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR);
         cout << endl << "\t" << bar << endl;
         cout << "\t";
         for (int j = 0; j < 5; j++) {
@@ -76,22 +76,22 @@ void PokerGame::display() {
             //Start display
             PokerCard card = reels[j].getCards().at(i);
             if (i == 1) { //Middle row
-                print(char(186), PURPLE);
+                print(char(186), BORDER_COLOUR);
                 print(char(card.getSuit()), card.getSuit() == SPADES || card.getSuit() == CLUBS ? LIGHT_AQUA : RED);
                 print(" ", BLACK);
                 print(card.getId(), YELLOW);
-                if (j == 4) print(char(186), PURPLE);
+                if (j == 4) print(char(186), BORDER_COLOUR);
             } else { //Top and bottom row
-                print(char(186), PURPLE);
+                print(char(186), BORDER_COLOUR);
                 print(char(card.getSuit()), card.getSuit() == SPADES || card.getSuit() == CLUBS ? DARK_AQUA : DARK_RED);
                 print(" ", BLACK);
                 print(card.getId(), DARK_GREY);
-                if (j == 4) print(char(186), PURPLE);
+                if (j == 4) print(char(186), BORDER_COLOUR);
             }
         }
     }
     string bar = { char(200), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(188) };
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), PURPLE);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR);
     cout << endl << "\t" << bar << endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREY);
     cout << endl;

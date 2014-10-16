@@ -57,6 +57,7 @@ void PokerGame::display() {
             bar = { char(204), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(185) };
         }
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR);
+        
         cout << endl << "\t" << bar << endl;
         cout << "\t";
         for (int j = 0; j < 5; j++) {

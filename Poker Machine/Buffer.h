@@ -34,4 +34,5 @@ public:
     void writeLine(std::string, byte);
     void writeLine(std::string, byte, byte);
     void writeCentered(std::string, byte, byte);
+    void writeAt(char, int, int, byte, byte);
 };

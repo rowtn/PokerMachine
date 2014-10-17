@@ -152,3 +152,8 @@ h4x0r Buffer::writeCentered(std::string s, byte foregroundColour, byte backgroun
         }
     }
 }
+
+h4x0r Buffer::writeAt(char c, int x, int y, byte foregroundColour, byte backgroundColour) {
+    buffer[x + size.X * y].Char.AsciiChar = c;
+    buffer[x + size.X * y].Attributes = foregroundColour + backgroundColour;
+}

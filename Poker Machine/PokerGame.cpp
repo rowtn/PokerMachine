@@ -11,6 +11,7 @@ PokerGame::PokerGame() {
 start:
     slotsRunning = true;
     system("cls");
+    system("color 80");
     srand(time(0));
     while (slotsRunning) {
         clock_t t = clock(); //Used for debug
@@ -32,7 +33,7 @@ start:
         while (clock() - t < 100) { /* Empty */}
     }
     checkWins();
-    print("Press ESC to quit, or ENTER to play again!", LIGHT_GREY); //prompt for input
+    print("\tPress ESC to quit, or ENTER to play again!", LIGHT_GREY); //prompt for input
     system("pause>nul");
 promptinput: //goes back here if 
     if (GetAsyncKeyState(VK_ESCAPE)) {
@@ -49,6 +50,7 @@ promptinput: //goes back here if
 
 h4x0r PokerGame::display() {
     cout << endl;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
 
@@ -62,10 +64,10 @@ h4x0r PokerGame::display() {
         } else if (i == 1 || i == 2) {
             bar = { char(204), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(185) };
         }
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR + 0x0080);
         
-        cout << endl << "\t" << bar << endl;
-        cout << "\t";
+        cout << endl << "\t\t  " << bar << endl;
+        cout << "\t\t  ";
         for (int j = 0; j < 5; j++) {
             /*
             Originally I was using std::list.
@@ -89,15 +91,15 @@ h4x0r PokerGame::display() {
                 print(char(186), BORDER_COLOUR);
                 print(char(card.getSuit()), card.getSuit() == SPADES || card.getSuit() == CLUBS ? DARK_AQUA : DARK_RED);
                 print(" ", BLACK);
-                print(card.getId(), DARK_GREY);
+                print(card.getId(), LIGHT_GREY);
                 if (j == 4) print(char(186), BORDER_COLOUR);
             }
         }
     }
     string bar = { char(200), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(188) };
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR);
-    cout << endl << "\t" << bar << endl;
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREY);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR + 0x0080);
+    cout << endl << "\t\t  " << bar << endl;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREY + 0x0080);
     cout << endl;
 }
 
@@ -184,8 +186,8 @@ int PokerGame::checkWins() {
 
     if (DEBUG) cout << endl << " " << clock() - t << "ms taken for winnings check." << endl;
 
-    cout << "Total winnings for this round = " << winnings << endl;
-    if (winnings > 0) printRainbow("YOU WIN!\n");
+    cout << "\tTotal winnings for this round = " << winnings << endl;
+    //if (winnings > 0) printRainbow("\t\t  YOU WIN!\n");
     return winnings;
 }
 
@@ -202,12 +204,12 @@ h4x0r PokerGame::resetReels() {
 }
 
 h4x0r PokerGame::print(char* s, Colour c) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
     cout << s;
 }
 
 h4x0r PokerGame::print(char s, Colour c) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
     cout << s;
 }
 

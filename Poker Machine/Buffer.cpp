@@ -39,3 +39,60 @@ void Buffer::writeLine(std::string s) {
 void Buffer::print() {
     WriteConsoleOutputA(handle, buffer, size, coord, &region);
 }
+
+void Buffer::skipLine(int skips) {
+    if (row + skips > size.Y) {
+        throw "Text outside of buffer";
+    }
+    row += skips;
+}
+
+void Buffer::write(std::string s, byte foregroundColour) {
+    for (auto &c : s) {
+        buffer[column + 30 * row].Char.AsciiChar = char(c);
+        buffer[column + 30 * row].Attributes = foregroundColour;
+        column++;
+        if (column % size.X == 0) {
+            column = 0;
+            row++;
+        }
+    }
+}
+
+void Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) {
+    for (auto &c : s) {
+        buffer[column + 30 * row].Char.AsciiChar = char(c);
+        buffer[column + 30 * row].Attributes = foregroundColour + backgroundColour;
+        column++;
+        if (column % size.X == 0) {
+            column = 0;
+            row++;
+        }
+    }
+}
+
+void Buffer::writeLine(std::string s, byte foregroundColour) {
+    column = size.X;
+    for (auto &c : s) {
+        buffer[column + 30 * row].Char.AsciiChar = char(c);
+        buffer[column + 30 * row].Attributes = foregroundColour;
+        column++;
+        if (column % size.X == 0) {
+            column = 0;
+            row++;
+        }
+    }
+}
+
+void Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundColour) {
+    column = size.X;
+    for (auto &c : s) {
+        buffer[column + 30 * row].Char.AsciiChar = char(c);
+        buffer[column + 30 * row].Attributes = foregroundColour + backgroundColour;
+        column++;
+        if (column % size.X == 0) {
+            column = 0;
+            row++;
+        }
+    }
+}

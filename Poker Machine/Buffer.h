@@ -16,7 +16,7 @@ private:
     COORD coord;
     SMALL_RECT region;
 
-    CHAR_INFO buffer[900];
+    CHAR_INFO buffer[1000];
 
     int column = 0, row = 0;
 public:
@@ -24,9 +24,12 @@ public:
     Buffer(int, int);
     void print(void); //done
     void write(std::string); //done
-    void write(char);
     void writeLine(std::string); //done
     void clear(void);
-    void skipLine(int);
+    void skipLine(int); //done
+    void write(std::string, byte); //done //string w/ foreground colour
+    void write(std::string, byte, byte); //done //string w/ foreground and background colour
+    void writeLine(std::string, byte); //done //string w/ foreground colour
+    void writeLine(std::string, byte, byte); //done //string w/ foreground and background colour
 };
 

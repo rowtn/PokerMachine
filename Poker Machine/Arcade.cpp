@@ -16,9 +16,9 @@ int _tmain(int argc, _TCHAR* argv[]) {
     cursor.dwSize = 1;
     cursor.bVisible = false;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
-    //PokerGame();
-    buffer.write("Bye, World!");
-    buffer.print();
+    PokerGame();
+    //buffer.write("Bye, World!");
+    //buffer.print();
 
     cin.get();
     return 0;

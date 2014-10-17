@@ -13,6 +13,11 @@ Buffer::Buffer(int x, int y) {
 
 void Buffer::write(std::string s) {
     for (auto &c : s) {
+        if (c == '\n') {
+            row++;
+            column = 0;
+            continue;
+        }
         buffer[column + 30 * row].Char.AsciiChar = char(c);
         buffer[column + 30 * row].Attributes = 0x0007;
         column++;
@@ -26,6 +31,11 @@ void Buffer::write(std::string s) {
 void Buffer::writeLine(std::string s) {
     column = size.X;
     for (auto &c : s) {
+        if (c == '\n') {
+            row++;
+            column = 0;
+            continue;
+        }
         buffer[column + 30 * row].Char.AsciiChar = char(c);
         buffer[column + 30 * row].Attributes = 0x0007;
         column++;
@@ -45,10 +55,16 @@ void Buffer::skipLine(int skips) {
         throw "Text outside of buffer";
     }
     row += skips;
+    column = 0;
 }
 
 void Buffer::write(std::string s, byte foregroundColour) {
     for (auto &c : s) {
+        if (c == '\n') {
+            row++;
+            column = 0;
+            continue;
+        }
         buffer[column + 30 * row].Char.AsciiChar = char(c);
         buffer[column + 30 * row].Attributes = foregroundColour;
         column++;
@@ -61,6 +77,11 @@ void Buffer::write(std::string s, byte foregroundColour) {
 
 void Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) {
     for (auto &c : s) {
+        if (c == '\n') {
+            row++;
+            column = 0;
+            continue;
+        }
         buffer[column + 30 * row].Char.AsciiChar = char(c);
         buffer[column + 30 * row].Attributes = foregroundColour + backgroundColour;
         column++;
@@ -74,6 +95,11 @@ void Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) 
 void Buffer::writeLine(std::string s, byte foregroundColour) {
     column = size.X;
     for (auto &c : s) {
+        if (c == '\n') {
+            row++;
+            column = 0;
+            continue;
+        }
         buffer[column + 30 * row].Char.AsciiChar = char(c);
         buffer[column + 30 * row].Attributes = foregroundColour;
         column++;
@@ -87,6 +113,11 @@ void Buffer::writeLine(std::string s, byte foregroundColour) {
 void Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundColour) {
     column = size.X;
     for (auto &c : s) {
+        if (c == '\n') {
+            row++;
+            column = 0;
+            continue;
+        }
         buffer[column + 30 * row].Char.AsciiChar = char(c);
         buffer[column + 30 * row].Attributes = foregroundColour + backgroundColour;
         column++;
@@ -95,4 +126,15 @@ void Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundColo
             row++;
         }
     }
+}
+
+void Buffer::clear() {
+    for (auto &cInfo : buffer) {
+        CHAR_INFO c;
+        c.Char.AsciiChar = char(0);
+        c.Attributes = 0x0000;
+        cInfo = c;
+    }
+    column = 0;
+    row = 0;
 }

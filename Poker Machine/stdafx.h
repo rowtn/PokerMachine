@@ -18,6 +18,7 @@
 #define yes true
 #define no false
 #define h4x0r void
+#define IntPair std::pair<int, int>
 //You found the Easter Egg. A cookie will be sent to you shortly (expected delivery time: LLONG_MAX days)
 
 // TODO: reference additional headers your program requires here

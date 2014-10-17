@@ -33,9 +33,6 @@
     <ClInclude Include="PokerGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BreakOut.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Buffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PokerGame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BreakOut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Arcade.cpp">

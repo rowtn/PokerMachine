@@ -79,7 +79,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BreakOut.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="PokerCard.h" />
     <ClInclude Include="PokerGame.h" />
@@ -88,7 +87,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BreakOut.cpp" />
     <ClCompile Include="Arcade.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="PokerCard.cpp" />

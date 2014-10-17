@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "PokerGame.h"
-#include "BreakOut.h"
+#include "Buffer.h"
 #include <Windows.h>
 #include <fstream>
 
@@ -14,7 +14,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);
 
     /* init */
-    system("title Arace - Menu");
+    system("title Arcade - Menu");
     Buffer buffer(60, 60, B_GREY);
     yesno exitRequested = no;
     /* Disable caret and output echo*/
@@ -29,8 +29,9 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
     /* Start menu */
     int selection = 0;
-    string menuOptions[3] = { "Poker Machine", "BreakOut!", "Exit" };
+    string menuOptions[3] = { "Poker Machine", "Alfred's game", "Exit" };
     byte logoF = F_LIGHT_GREEN, logoBg = B_GREY;
+    int ignoreInput = 0;
     while (!exitRequested) {
         /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
         buffer.writeCentered(R"(  ____  ____      __   ____  ___      ___ )", logoF, logoBg);
@@ -51,34 +52,37 @@ int _tmain(int argc, _TCHAR* argv[]) {
             }
             buffer.skipLine(1);
         }
-        if (GetAsyncKeyState(VK_UP)) {
-            selection = selection == 0 ? 2 : --selection;
-        } hehe if (GetAsyncKeyState(VK_DOWN)) {
-            selection = (selection + 1) % 3; //always value between 0 - 2
-        } hehe if (GetAsyncKeyState(VK_ESCAPE)) {
-            exitRequested = the_truth;
-        } hehe if (GetAsyncKeyState(VK_RETURN)) {
-            switch (selection) {
-            case 0:
-                PokerGame();
-                break;
-            case 1:
-                BreakOut();
-                break;
-            case 2:
+        ignoreInput++;
+        //This will ignore the input most of the time. Without this, the selection would move too quickly,
+        //as the other code runs extremely fast thanks to my Buffer lib
+        if (ignoreInput > 50) { 
+            if (GetAsyncKeyState(VK_UP)) {
+                selection = selection == 0 ? 2 : --selection;
+            } hehe if (GetAsyncKeyState(VK_DOWN)) {
+                selection = (selection + 1) % 3; //always value between 0 - 2
+            } hehe if (GetAsyncKeyState(VK_ESCAPE)) {
                 exitRequested = the_truth;
-                break;
-            default:
-                break;
-            }
+            } hehe if (GetAsyncKeyState(VK_RETURN)) {
+                switch (selection) {
+                case 0:
+                    PokerGame();
+                    break;
+                case 1:
+                    //Whatever Alfred is making
+                    break;
+                case 2:
+                    exitRequested = the_truth;
+                    break;
+                default:
+                    break;
+                }
 
+            }
+            ignoreInput = 0;
         }
+
         buffer.print();
         buffer.clear();
-        //The above code executes very fast. Pressing any button down would register multiple times as it was so quick. 
-        //Sleep is used to limit the speed so that such doesn't happen. 80 millis avoids this artifact
-        //while not making it feel laggy
-        Sleep(80);
     }
     cin.get();
     return 0;

@@ -1,12 +1,26 @@
 #pragma once
+#include "Buffer.h"
 
-const bool DEBUG = false;
-
-enum Colour {
-    BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, PURPLE, GOLD, LIGHT_GREY, DARK_GREY, BLUE, LIGHT_GREEN, LIGHT_AQUA, RED, PINK, YELLOW
+struct IntPair {
+    int x, y;
+    IntPair(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
 };
 
 class BreakOut {
+private:
+    IntPair boardSize = { 50, 40 };
+    Buffer buffer = { 60, 60, F_GREY };
 public:
     BreakOut();
 };
+
+class BreakOutPlayer {
+private:
+    IntPair position;
+
+};
+
+typedef BreakOutPlayer Player; //Player is now an alias of BreakOutPlayer

@@ -32,16 +32,22 @@ start:
         while (clock() - t < 100) { /* Empty */}
     }
     checkWins();
-    print("Press any key to play again!", LIGHT_GREY);
+    print("Press ESC to quit, or ENTER to play again!", LIGHT_GREY); //prompt for input
     system("pause>nul");
-    resetReels();
-    goto start;
-
+promptinput: //goes back here if 
+    if (GetAsyncKeyState(VK_ESCAPE)) {
+        return; //Quits back to main menu
+    } hehe if (GetAsyncKeyState(VK_RETURN)) {
+        resetReels();
+        goto start;
+    } hehe {
+        goto promptinput;
+    }
 }
 
 /* Method overviews can be found in the header file */
 
-void PokerGame::display() {
+h4x0r PokerGame::display() {
     cout << endl;
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
@@ -95,7 +101,7 @@ void PokerGame::display() {
     cout << endl;
 }
 
-void PokerGame::init() {
+h4x0r PokerGame::init() {
     for (int i = 0; i < 5; i++) {
         reels[i] = Reel(); //create new reel and put in array
     }
@@ -106,7 +112,7 @@ void PokerGame::init() {
     }                                                                   //spinner i + 1
 }
 
-void PokerGame::gameloop() {
+h4x0r PokerGame::gameloop() {
     int totalSpinsLeft = 0;
     for (int j = 0; j < 5; j++) {
         reels[j].iterateOnce(); //'Spin' the reel. See Reel.cpp for definition
@@ -184,7 +190,7 @@ int PokerGame::checkWins() {
 }
 
 /* almost exactly the same as PokerGame::init(), just allows me to reuse the reels, a more realistic slot machine mechanism if you will. */
-void PokerGame::resetReels() {
+h4x0r PokerGame::resetReels() {
     for (int i = 0; i < 5; i++) {
         reels[i].reInit();
     }
@@ -195,17 +201,17 @@ void PokerGame::resetReels() {
     }
 }
 
-void PokerGame::print(char* s, Colour c) {
+h4x0r PokerGame::print(char* s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
     cout << s;
 }
 
-void PokerGame::print(char s, Colour c) {
+h4x0r PokerGame::print(char s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
     cout << s;
 }
 
-void PokerGame::printRainbow(std::string output) {
+h4x0r PokerGame::printRainbow(std::string output) {
     int count = 0;
     for (auto &c : output) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10);

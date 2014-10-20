@@ -30,7 +30,6 @@ public:
     void clear(void);
     void skipLine(int);
     void write(std::string, byte);
-    void write(char, byte);
     void write(std::string, byte, byte);
     void writeLine(std::string, byte);
     void writeLine(std::string, byte, byte);

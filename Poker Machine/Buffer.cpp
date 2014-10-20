@@ -77,21 +77,6 @@ h4x0r Buffer::write(std::string s, byte foregroundColour) {
     }
 }
 
-h4x0r Buffer::write(char c, byte foregroundColour) {
-    if (c == '\n') {
-        row++;
-        column = 0;
-        return;
-    }
-    buffer[column + size.X * row].Char.AsciiChar = c;
-    buffer[column + size.X * row].Attributes = foregroundColour;
-    column++;
-    if (column % size.X == 0) {
-        column = 0;
-        row++;
-    }
-}
-
 h4x0r Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) {
     for (auto &c : s) {
         if (c == '\n') {

@@ -3,7 +3,6 @@
 #include "stdafx.h"
 #include "PokerCard.h"
 #include "Reel.h"
-#include "Buffer.h"
 #include <Windows.h>
 #include <vector>
 #include <time.h>
@@ -13,13 +12,16 @@
 const int TWO_K = 0, THREE_K = 1, FOUR_K = 5, FIVE_K = 25, STRAIGHT = 10, IO_R_FLUSH = 85, UO_R_FLUSH = 4;
 const bool DEBUG = false;
 
-const byte BORDER_COLOUR = F_PURPLE + B_GREY;
+enum Colour {
+    BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, PURPLE, GOLD, LIGHT_GREY, DARK_GREY, BLUE, LIGHT_GREEN, LIGHT_AQUA, RED, PINK, YELLOW
+};
+
+const Colour BORDER_COLOUR = PURPLE;
 
 class PokerGame {
 private:
     Reel reels[5];
     bool slotsRunning = true;
-    Buffer buffer;
 public:
     PokerGame();
     //display cards on screen
@@ -33,8 +35,7 @@ public:
     //Checks for wins, returns credits won
     int checkWins(void);
     //print text with colour.
-    void print(string, byte);
-    void print(char, byte);
-    void print(char *, byte);
+    void print(char *, Colour);
+    void print(char, Colour);
     void printRainbow(std::string);
 };

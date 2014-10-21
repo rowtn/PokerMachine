@@ -176,16 +176,24 @@ int PokerGame::checkWins() {
     /* Count the cards, check for straights */
     map<char, int> cardCount;
     bool straight = true; //Used to detect straights from ltr and rtl
+    bool flushIO = true; //Flush in order
     for (vector<PokerCard>::iterator it = mainHorzLine.begin(); it != mainHorzLine.end(); ++it) {
+        //if the first card isn't a 10, then a royal flush isn't possible
+        if (it->getId() != TEN && it == mainHorzLine.begin()) flushIO = false;
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
         //Checks if the next card along has a greater index (value)than the current (or if the card is a joker)
         //Also checks if there is a next iteration possible to avoid errors
         if (it + 1 != mainHorzLine.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
             straight = false;
         }
+        if (it + 1 != mainHorzLine.end() && (it + 1)->getSuit() != it->getSuit() || it->getId() != JOKER) {
+            flushIO = false;
+
     }
     if (DEBUG) cout << "Straight: " << straight << endl;
+    //if win of whatever type, and winning prize is more than current winning amount
     winnings = straight && STRAIGHT > winnings ? STRAIGHT : winnings;
+    winnings = flushIO && straight && IO_R_FLUSH > winnings ? IO_R_FLUSH : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
     for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {

@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+//*_K = * of a kind. IO_R_FLUSH = in order royal flush, UO_R_FLUSH = unordered royal flush
 const int TWO_K = 0, THREE_K = 1, FOUR_K = 5, FIVE_K = 25, STRAIGHT = 10, IO_R_FLUSH = 85, UO_R_FLUSH = 4;
 const bool DEBUG = false;
 

@@ -90,6 +90,7 @@ h4x0r PokerGame::display() {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
     cout << " Coins:" << coins << "    " << endl; //extra spaces added because of the method of clearing screen
     cout << " Credits:" << credits << "     " << endl;
+    /* Card shorthand legend */
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
     for (int i = 0; i < 3; i++) {
@@ -188,7 +189,7 @@ int PokerGame::checkWins() {
         }
         if (it + 1 != mainHorzLine.end() && (it + 1)->getSuit() != it->getSuit() || it->getId() != JOKER) {
             flushIO = false;
-
+        }
     }
     if (DEBUG) cout << "Straight: " << straight << endl;
     //if win of whatever type, and winning prize is more than current winning amount
@@ -250,6 +251,7 @@ h4x0r PokerGame::resetReels() {
     }
 }
 
+/* prints string in specified colour with grey background */
 h4x0r PokerGame::print(char* s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
     cout << s;
@@ -262,8 +264,8 @@ h4x0r PokerGame::print(char s, Colour c) {
 
 h4x0r PokerGame::printRainbow(std::string output) {
     int count = 0;
-    for (auto &c : output) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10);
+    for (auto &c : output) { //get all chars in stsring
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10); //set output colour to whatever
         cout << c;
     }
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PokerGame.h"
 #include <thread>
+#include <mmsystem.h>
 
 using namespace std;
 
@@ -31,10 +32,17 @@ start:
         display();
         if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
         //This pauses the thread for 100 milliseconds since the last iteration
-        while (clock() - t < 100) { /* Empty */}
+        while (clock() - t < 100) { /* Empty */ }
     }
     credits--; //subract credit for turn
-    checkWins();
+    if (checkWins() > 0) {
+        //If won something
+        //sound source: http://www.freesfx.co.uk/download/?type=mp3&id=3928
+        PlaySound(TEXT("poker-win.wav"), NULL, SND_ASYNC);
+    } else {
+        //sound source: http://www.soundjay.com/misc/sounds/fail-trombone-01.mp3
+        PlaySound(TEXT("poker-lose.wav"), NULL, SND_ASYNC);
+    }
     if (credits <= 0 && coins <= 0) {
         cout << "\tSorry, you don't have any coins\n\t or credits. Press any key to return to the main menu";
         system("pause>nul");
@@ -63,7 +71,7 @@ start:
                 system("pause>nul");
                 return; //quit to main menu
             }
-        } hehe {
+        } hehe{
             goto promptcoininput;
         }
     }
@@ -78,7 +86,7 @@ promptinput: //goes back here if
     } hehe if (GetAsyncKeyState(VK_RETURN)) {
         resetReels();
         goto start;
-    } hehe {
+    } hehe{
         goto promptinput;
     }
 }
@@ -104,7 +112,7 @@ h4x0r PokerGame::display() {
             bar = { char(204), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(206), char(205), char(205), char(205), char(185) };
         }
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR + 0x0080);
-        
+
         cout << endl << "\t\t  " << bar << endl;
         cout << "\t\t  ";
         for (int j = 0; j < 5; j++) {

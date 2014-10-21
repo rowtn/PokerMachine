@@ -13,22 +13,16 @@ PokerGame::PokerGame() {
     init();
     system("cls");
     system("color 8a");
-    string openingMessage = "Welcome to Pokies (tm). Enjoy your stay!";
-    COORD position = { 30 - openingMessage.length() / 2 , 3 };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
-    for (char c : openingMessage) {
-        cout << c;
-        clock_t t = clock();
-        while (clock() - t < 50) { /* Delay of 50ms */ }
-    }
-    string openingMessage2 = "Press any key to start playing!";
-    position = { 30 - openingMessage2.length() / 2, 4 };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
-    for (char c : openingMessage2) {
-        cout << c;
-        clock_t t = clock();
-        while (clock() - t < 50) { /* Delay of 50ms */ }
-    }
+    cout << endl << endl << endl;
+    delayedPrint("Welcome to Pokies! Enjoy your stay");
+    delayedPrint("You will start out with 5 credits.");
+    delayedPrint("You will earn coins for any wins!");
+    delayedPrint("If you run out of credits you can");
+    delayedPrint("trade a coin in for credits and keep");
+    delayedPrint("playing. Or you could quit to the");
+    delayedPrint("main menu and try BreakOut!");
+    cout << endl;
+    delayedPrint("Press any key to continue!");
     system("pause>nul");
 start:
     slotsRunning = true;
@@ -44,7 +38,7 @@ start:
         This works in this case as it is only neccesary to over-write characters on the screen.
         However system("cls") is still required when a full clear screen is needed. This is essentially a little hack.
         */
-        position = { 0, 0 };
+        COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
         if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration.  " << endl;
@@ -95,7 +89,7 @@ start:
         }
     }
     print("\tPress ESC to quit, or ENTER to play again!", LIGHT_GREY); //prompt for input
-    position = { 0, 0 };
+    COORD position = { 0, 0 };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
     display();
     system("pause>nul");
@@ -313,9 +307,16 @@ h4x0r PokerGame::printRainbow(std::string output) {
 }
 
 void PokerGame::delayedPrint(std::string s) {
+    COORD position = { 30 - s.length() / 2, };
+    CONSOLE_SCREEN_BUFFER_INFO con;
+    HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    GetConsoleScreenBufferInfo(hcon, &con);
+    position.Y = con.dwCursorPosition.Y;
+    SetConsoleCursorPosition(hcon, position);
     for (char c : s) {
         cout << c;
         clock_t t = clock();
         while (clock() - t < 50) { /* Delay of 50ms */ }
     }
+    cout << endl;
 }

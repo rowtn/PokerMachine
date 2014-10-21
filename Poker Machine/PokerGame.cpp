@@ -5,6 +5,7 @@
 using namespace std;
 
 //Originally the main function
+
 PokerGame::PokerGame() {
     system("title Pokies");
     init();
@@ -32,8 +33,44 @@ start:
         //This pauses the thread for 100 milliseconds since the last iteration
         while (clock() - t < 100) { /* Empty */}
     }
+    credits--; //subract credit for turn
     checkWins();
+    if (credits <= 0 && coins <= 0) {
+        cout << "\tSorry, you don't have any coins\n\t or credits. Press any key to return to the main menu";
+        system("pause>nul");
+        return; //return to menu
+    }
+    if (credits <= 0) {
+        cout << "\tYou are out of credits.\n\tWould you like to trade a coin for 5 credits?" << endl;
+        cout << "\tPress ENTER to add more credits,\n\tor ESCAPE to count your losses" << endl;
+    promptcoininput: //goes back here if 
+        if (GetAsyncKeyState(VK_ESCAPE)) {
+            return; //Quits back to main menu
+        } hehe if (GetAsyncKeyState(VK_RETURN)) {
+            if (coins > 0) {
+                coins--;
+                credits += 5;
+                resetReels();
+                COORD position = { 0, 0 };
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+                display();
+                goto start;
+            } else {
+                cout << "\n\tSorry, you do not have enough coins to continue.\n\tPress any key to go back to the menu." << endl;
+                COORD position = { 0, 0 };
+                SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+                display();
+                system("pause>nul");
+                return; //quit to main menu
+            }
+        } hehe {
+            goto promptcoininput;
+        }
+    }
     print("\tPress ESC to quit, or ENTER to play again!", LIGHT_GREY); //prompt for input
+    COORD position = { 0, 0 };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+    display();
     system("pause>nul");
 promptinput: //goes back here if 
     if (GetAsyncKeyState(VK_ESCAPE)) {
@@ -51,9 +88,10 @@ promptinput: //goes back here if
 h4x0r PokerGame::display() {
     cout << endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
+    cout << " Coins:" << coins << "    " << endl; //extra spaces added because of the method of clearing screen
+    cout << " Credits:" << credits << "     " << endl;
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
-
     for (int i = 0; i < 3; i++) {
         //You cannot have fancy ASCII characters in string literals. When compiled, it outputs as '?'.
         //To avoid this, you must construct an array of the characters. The number passed to the contructor
@@ -125,7 +163,7 @@ h4x0r PokerGame::gameloop() {
 }
 
 int PokerGame::checkWins() {
-    int winnings = -1; //by default, lose 1 credit
+    int winnings = 0; //by default, lose 1 credit
     //TODO: Check for wins
 
     /* Create vectors holding horizontal lines */
@@ -138,16 +176,24 @@ int PokerGame::checkWins() {
     /* Count the cards, check for straights */
     map<char, int> cardCount;
     bool straight = true; //Used to detect straights from ltr and rtl
+    bool flushIO = true; //Flush in order
     for (vector<PokerCard>::iterator it = mainHorzLine.begin(); it != mainHorzLine.end(); ++it) {
+        //if the first card isn't a 10, then a royal flush isn't possible
+        if (it->getId() != TEN && it == mainHorzLine.begin()) flushIO = false;
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
         //Checks if the next card along has a greater index (value)than the current (or if the card is a joker)
         //Also checks if there is a next iteration possible to avoid errors
         if (it + 1 != mainHorzLine.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
             straight = false;
         }
+        if (it + 1 != mainHorzLine.end() && (it + 1)->getSuit() != it->getSuit() || it->getId() != JOKER) {
+            flushIO = false;
+
     }
     if (DEBUG) cout << "Straight: " << straight << endl;
+    //if win of whatever type, and winning prize is more than current winning amount
     winnings = straight && STRAIGHT > winnings ? STRAIGHT : winnings;
+    winnings = flushIO && straight && IO_R_FLUSH > winnings ? IO_R_FLUSH : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
     for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {
@@ -188,6 +234,7 @@ int PokerGame::checkWins() {
 
     cout << "\tTotal winnings for this round = " << winnings << endl;
     //if (winnings > 0) printRainbow("\t\t  YOU WIN!\n");
+    coins += winnings;
     return winnings;
 }
 

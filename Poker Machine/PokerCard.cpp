@@ -4,13 +4,13 @@
 /* Definitions */
 
 /**
-@param idIndex the card type (e.g. ACE, KINGS)
-@param  suit the suit of the card
+@param x the card type (e.g. ACE, KINGS)
+@param  y the suit of the card
 */
-PokerCard::PokerCard(int idIndex, int suit) {
-    this->idIndex = idIndex;
-    this->id = possibleChars[idIndex];
-    this->suit = suit;
+PokerCard::PokerCard(int x, int y) {
+    idIndex = x;
+    id = possibleChars[idIndex];
+    suit = y;
 }
 
 /**

@@ -11,8 +11,8 @@ PokerGame::PokerGame() {
 start:
     slotsRunning = true;
     system("cls");
-    system("color 80"); //change default colour to grey background and black text
-    srand(time(0)); //seed the random
+    system("color 80");
+    srand(time(0));
     while (slotsRunning) {
         clock_t t = clock(); //Used for debug
         /*
@@ -51,13 +51,12 @@ promptinput: //goes back here if
 h4x0r PokerGame::display() {
     cout << endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
-    /* Card shorthand legend */
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
 
     for (int i = 0; i < 3; i++) {
         //You cannot have fancy ASCII characters in string literals. When compiled, it outputs as '?'.
-        //To avoid this, you must construct an array of the characters. The number passed to the char contructor
+        //To avoid this, you must construct an array of the characters. The number passed to the contructor
         //is an ASCII code. @source http://asciitable.com/
         string bar;
         if (i == 0) {
@@ -203,7 +202,7 @@ h4x0r PokerGame::resetReels() {
         reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());
     }
 }
-/* prints string in specified colour with grey background */
+
 h4x0r PokerGame::print(char* s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
     cout << s;
@@ -216,8 +215,8 @@ h4x0r PokerGame::print(char s, Colour c) {
 
 h4x0r PokerGame::printRainbow(std::string output) {
     int count = 0;
-    for (auto &c : output) { //get all chars in stsring
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10); //set output colour to whatever
+    for (auto &c : output) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10);
         cout << c;
     }
 }

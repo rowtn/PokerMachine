@@ -2,6 +2,7 @@
 #include "PokerGame.h"
 #include <thread>
 #include <mmsystem.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -189,7 +190,11 @@ int PokerGame::checkWins() {
     map<char, int> cardCount;
     bool straight = true; //Used to detect straights from ltr and rtl
     bool flushIO = true; //Flush in order
+    bool flushUO = true; //unordered flush
+    int royalFlushCards[5]; //store the card values (no suit). Used for unordered royal flush. the array gets sorted and then a flush is checked for
+    int rFCCounter = 0; //counter
     for (vector<PokerCard>::iterator it = mainHorzLine.begin(); it != mainHorzLine.end(); ++it) {
+        royalFlushCards[rFCCounter++] = it->getIdIndex();
         //if the first card isn't a 10, then a royal flush isn't possible
         if (it->getId() != TEN && it == mainHorzLine.begin()) flushIO = false;
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
@@ -198,14 +203,25 @@ int PokerGame::checkWins() {
         if (it + 1 != mainHorzLine.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
             straight = false;
         }
+        //if the next card in the line isn't of the same suit, then a royal flush will not happen
         if (it + 1 != mainHorzLine.end() && (it + 1)->getSuit() != it->getSuit() || it->getId() != JOKER) {
             flushIO = false;
+            flushUO = false;
+        }
+    }
+    if (flushUO) { //if all suits are the same...
+        std::sort(royalFlushCards, royalFlushCards + 5); //sort the array
+        if (royalFlushCards[0] != 2) flushUO = false; //If the first in the sorted array isn't of index 2, i.e. the TEN card, it isn't a royal flush
+        for (int i = 0; i < 4; i++) {
+            if (royalFlushCards[i] > royalFlushCards[i + 1]) flushUO = false; //if the next card has a lower value, it isn't a royal flush
         }
     }
     if (DEBUG) cout << "Straight: " << straight << endl;
-    //if win of whatever type, and winning prize is more than current winning amount
+    //if win of whatever type, and winning prize is more than current winning amount, set winnings to new amount
+    //ensures only the highest valued prize is given
     winnings = straight && STRAIGHT > winnings ? STRAIGHT : winnings;
     winnings = flushIO && straight && IO_R_FLUSH > winnings ? IO_R_FLUSH : winnings;
+    winnings = flushUO && UO_R_FLUSH > winnings ? UO_R_FLUSH : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
     for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {

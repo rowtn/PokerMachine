@@ -10,10 +10,13 @@ using namespace std;
 PokerGame::PokerGame() {
     system("title Pokies");
     init();
+    system("cls");
+    system("color 8a");
+    cout << endl << endl<< "\t\t  Press any key to start!";
+    system("pause>nul");
 start:
     slotsRunning = true;
     system("cls");
-    system("color 80");
     srand(time(0));
     while (slotsRunning) {
         clock_t t = clock(); //Used for debug
@@ -71,7 +74,7 @@ start:
                 system("pause>nul");
                 return; //quit to main menu
             }
-        } hehe{
+        } hehe {
             goto promptcoininput;
         }
     }
@@ -86,7 +89,7 @@ promptinput: //goes back here if
     } hehe if (GetAsyncKeyState(VK_RETURN)) {
         resetReels();
         goto start;
-    } hehe{
+    } hehe {
         goto promptinput;
     }
 }

@@ -58,11 +58,15 @@ int _tmain(int argc, _TCHAR* argv[]) {
         if (ignoreInput > 50) { 
             if (GetAsyncKeyState(VK_UP)) {
                 selection = selection == 0 ? 2 : --selection;
+                PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
             } hehe if (GetAsyncKeyState(VK_DOWN)) {
                 selection = (selection + 1) % 3; //always value between 0 - 2
+                PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
             } hehe if (GetAsyncKeyState(VK_ESCAPE)) {
                 exitRequested = the_truth;
+                PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
             } hehe if (GetAsyncKeyState(VK_RETURN)) {
+                PlaySound(TEXT("menu-select.wav"), NULL, SND_ASYNC);
                 switch (selection) {
                 case 0:
                     PokerGame();
@@ -70,8 +74,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
                 case 1:
                     //Whatever Alfred is making
                     break;
-                case 2:
-                    exitRequested = the_truth;
+                case 2:exitRequested = true;
                     break;
                 default:
                     break;
@@ -84,7 +87,6 @@ int _tmain(int argc, _TCHAR* argv[]) {
         buffer.print();
         buffer.clear();
     }
-    cin.get();
     return 0;
 }
 

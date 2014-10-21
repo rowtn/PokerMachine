@@ -45,8 +45,8 @@ int _tmain(int argc, _TCHAR* argv[]) {
         for (int i = 0; i < 3; i++) {
             buffer.skipLine(1);
             //Highlight selection and flash
-            if (i == selection && clock() % 300 > 150) {
-                buffer.writeCentered("> " + menuOptions[i] + " <", F_LIGHT_AQUA, B_GREY);
+            if (i == selection) {
+                buffer.writeCentered((clock() % 300 > 150 ? "> " : "") + menuOptions[i] + (clock() % 300 > 150 ? " <" : ""), F_LIGHT_AQUA, B_GREY);
             } hehe {
                 buffer.writeCentered(menuOptions[i], F_BLACK, B_GREY);
             }

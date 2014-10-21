@@ -33,7 +33,7 @@ void Reel::setSpins(int s) {
 }
 
 void Reel::reInit() {
-    spins = rand() % 10 + 10;
+    spins = rand() % 10 + 10; //add random amount of spins. same as repopulateReel, but keeps all cards in the reel
 }
 
 std::vector<PokerCard> Reel::getCards() {

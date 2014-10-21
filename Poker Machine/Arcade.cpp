@@ -17,7 +17,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     system("title Arcade - Menu");
     Buffer buffer(60, 60, B_GREY);
     yesno exitRequested = no;
-    /* Disable caret and output echo*/
+    /* Disable caret and input echo (makes whatever is being typed in invisible */
     HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
     DWORD mode = 0;
     GetConsoleMode(hStdin, &mode);
@@ -46,7 +46,8 @@ int _tmain(int argc, _TCHAR* argv[]) {
             buffer.skipLine(1);
             //Highlight selection and flash
             if (i == selection) {
-                buffer.writeCentered((clock() % 300 > 150 ? "> " : "") + menuOptions[i] + (clock() % 300 > 150 ? " <" : ""), F_LIGHT_AQUA, B_GREY);
+                //using clock() % 500 > 250 in the ternary operations below ensure that the selection will flash every 250ms
+                buffer.writeCentered((clock() % 500 > 250 ? "> " : "- ") + menuOptions[i] + (clock() % 500 > 250 ? " <" : " -"), F_LIGHT_AQUA, B_GREY);
             } hehe {
                 buffer.writeCentered(menuOptions[i], F_BLACK, B_GREY);
             }
@@ -79,31 +80,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
                 default:
                     break;
                 }
-
             }
             ignoreInput = 0;
         }
-
         buffer.print();
         buffer.clear();
     }
     return 0;
-}
-
-void print(char* s, Colour c) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
-    cout << s;
-}
-
-void print(char s, Colour c) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
-    cout << s;
-}
-
-void printRainbow(std::string output) {
-    int count = 0;
-    for (auto &c : output) {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10);
-        cout << c;
-    }
 }

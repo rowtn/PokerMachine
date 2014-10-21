@@ -13,7 +13,22 @@ PokerGame::PokerGame() {
     init();
     system("cls");
     system("color 8a");
-    cout << endl << endl<< "\t\t  Press any key to start!";
+    string openingMessage = "Welcome to Pokies (tm). Enjoy your stay!";
+    COORD position = { 30 - openingMessage.length() / 2 , 3 };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+    for (char c : openingMessage) {
+        cout << c;
+        clock_t t = clock();
+        while (clock() - t < 50) { /* Delay of 50ms */ }
+    }
+    string openingMessage2 = "Press any key to start playing!";
+    position = { 30 - openingMessage2.length() / 2, 4 };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
+    for (char c : openingMessage2) {
+        cout << c;
+        clock_t t = clock();
+        while (clock() - t < 50) { /* Delay of 50ms */ }
+    }
     system("pause>nul");
 start:
     slotsRunning = true;
@@ -29,7 +44,7 @@ start:
         This works in this case as it is only neccesary to over-write characters on the screen.
         However system("cls") is still required when a full clear screen is needed. This is essentially a little hack.
         */
-        COORD position = { 0, 0 };
+        position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
         if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration.  " << endl;
@@ -80,7 +95,7 @@ start:
         }
     }
     print("\tPress ESC to quit, or ENTER to play again!", LIGHT_GREY); //prompt for input
-    COORD position = { 0, 0 };
+    position = { 0, 0 };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
     display();
     system("pause>nul");
@@ -100,8 +115,8 @@ promptinput: //goes back here if
 h4x0r PokerGame::display() {
     cout << endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
-    cout << " Coins:" << coins << "    " << endl; //extra spaces added because of the method of clearing screen
-    cout << " Credits:" << credits << "     " << endl;
+    cout << " Coins: " << coins << "    " << endl; //extra spaces added because of the method of clearing screen
+    cout << " Credits: " << credits << "     " << endl;
     /* Card shorthand legend */
     cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
     cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
@@ -294,5 +309,13 @@ h4x0r PokerGame::printRainbow(std::string output) {
     for (auto &c : output) { //get all chars in stsring
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10); //set output colour to whatever
         cout << c;
+    }
+}
+
+void PokerGame::delayedPrint(std::string s) {
+    for (char c : s) {
+        cout << c;
+        clock_t t = clock();
+        while (clock() - t < 50) { /* Delay of 50ms */ }
     }
 }

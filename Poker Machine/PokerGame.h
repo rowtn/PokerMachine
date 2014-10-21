@@ -44,4 +44,6 @@ public:
     void print(char *, Colour);
     void print(char, Colour);
     void printRainbow(std::string);
+    //Delayed print. Looks as if someone is typing the text
+    void delayedPrint(std::string);
 };

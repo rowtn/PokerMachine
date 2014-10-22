@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffer.h" />
+    <ClInclude Include="BreakOut.h" />
     <ClInclude Include="PokerCard.h" />
     <ClInclude Include="PokerGame.h" />
     <ClInclude Include="Reel.h" />
@@ -90,6 +91,7 @@
   <ItemGroup>
     <ClCompile Include="Arcade.cpp" />
     <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="BreakOut.cpp" />
     <ClCompile Include="PokerCard.cpp" />
     <ClCompile Include="PokerGame.cpp" />
     <ClCompile Include="Reel.cpp" />

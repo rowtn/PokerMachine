@@ -61,4 +61,7 @@ public:
     void clear(void);
     //skips int amount of lines
     void skipLine(int);
+    //Set cursor position (x, y)
+    void setCursorPosition(int, int);
+    IntPair getCursorPosition();
 };

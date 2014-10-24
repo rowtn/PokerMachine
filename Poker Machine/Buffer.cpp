@@ -166,3 +166,12 @@ h4x0r Buffer::writeAt(char c, int x, int y, byte foregroundColour, byte backgrou
     buffer[x + size.X * y].Char.AsciiChar = c;
     buffer[x + size.X * y].Attributes = foregroundColour + backgroundColour;
 }
+
+h4x0r Buffer::setCursorPosition(int x, int y) {
+    column = x;
+    row = y;
+}
+
+IntPair Buffer::getCursorPosition() {
+    return IntPair(column, row);
+}

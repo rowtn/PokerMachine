@@ -4,13 +4,14 @@
 
 BreakOut::BreakOut() {
     //ballLocation.second = 15;
+    paddle.x = 12;
     buffer.clear();
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 30; j++) {
             blocks[i][j] = 3 - i;
         }
     }
-    while (gameRunning) gameloop();
+    while (lives > 0) gameloop();
     buffer.clear();
     buffer.skipLine(5);
     buffer.writeCentered("u lost m9", F_BLACK, B_GREY);
@@ -25,6 +26,12 @@ void BreakOut::gameloop() {
             if (i == 0 || i == 31 || j == 0 || j == 31) buffer.writeAt(char(219), printOffset + i, 2 + j, F_BRIGHT_WHITE, B_GREY);
         }
     }
+    buffer.setCursorPosition(printOffset, 34);
+    buffer.write("Lives: ", F_BLACK, B_GREY);
+    for (int i = 1; i <= lives; i++) {
+        buffer.write({ char(3) }, F_LIGHT_RED, B_GREY);
+    }
+
     byte colours[3] = { F_LIGHT_RED, F_LIGHT_AQUA, F_LIGHT_GREEN };
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 30; j++) {
@@ -98,18 +105,27 @@ void BreakOut::gameloop() {
             break;
         }
     }
-    if (ballLocation.second > paddle.y + 2) {
-        gameRunning = false;
+
+    /* loss. reset game and subtract life */
+    if (ballLocation.second > paddle.y + 1) {
+        buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED, B_GREY);
+        buffer.writeAt(char(0), printOffset + 6 + lives, 34, F_GREY, B_GREY);
+        buffer.print();
+        lives--;
+        ballDir = S;
+        paddle = { 12, 30 };
+        ballLocation = { 15, 15 };
+        system("pause>nul");
     }
     if (ballLocation.second == paddle.y - 1) {
         //TODO: Explicit checks
         if (ballLocation.first > paddle.x + 2 && ballLocation.first < paddle.x + 5) {
             ballDir = N;
         } 
-        if (ballLocation.first <= paddle.x + 2) {
+        if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
             ballDir = NW;
         } 
-        if (ballLocation.first >= paddle.x + 4) {
+        if (ballLocation.first >= paddle.x + 4 && ballLocation.first <= paddle.x + 5) {
             ballDir = NE;
         }
     }

@@ -90,7 +90,16 @@ void BreakOut::gameloop() {
         ballLocation.first--;
         break;
     }
-
+    /* Ball hitting paddle */
+    if (ballLocation.second == paddle.y - 1) {
+        if (ballLocation.first == paddle.x + 3) {
+            ballDir = N;
+        } else if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
+            ballDir = NW;
+        } else if (ballLocation.first >= paddle.x + 4 && ballLocation.first <= paddle.x + 6) {
+            ballDir = NE;
+        }
+    }
     /* move paddle */
     if (GetAsyncKeyState(VK_LEFT)) {
         if (paddle.x > 0) paddle.x--;
@@ -158,16 +167,7 @@ void BreakOut::gameloop() {
             won = false;
         }
     }
-    /* Ball hitting paddle */
-    if (ballLocation.second == paddle.y - 1) {
-        if (ballLocation.first == paddle.x + 3) {
-            ballDir = N;
-        } else if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
-            ballDir = NW;
-        } else if (ballLocation.first >= paddle.x + 4 && ballLocation.first <= paddle.x + 6) {
-            ballDir = NE;
-        }
-    }
+
     //top row
     if (ballLocation.second == 3 && blocks[0][ballLocation.first - 1] > 0) {
         blocks[0][ballLocation.first - 1]--; //decrements value at required position

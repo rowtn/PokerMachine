@@ -16,9 +16,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
     /* init */
     system("title Arcade - Menu");
-    Buffer buffer(60, 60, B_GREY);
+    Buffer buffer(60, 60, B_GREY); //instantiate buffer with size 60, 60, and default colours grey background and black foreground
     yesno exitRequested = no;
-    /* Disable caret and input echo (makes whatever is being typed in invisible */
+    /* Disable caret and input echo (makes whatever is being typed in invisible) 
+    http://www.cplusplus.com/forum/beginner/118447/#msg645990 input echo
+    */
     HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
     DWORD mode = 0;
     GetConsoleMode(hStdin, &mode);
@@ -56,7 +58,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
         }
         ignoreInput++;
         //This will ignore the input most of the time. Without this, the selection would move too quickly,
-        //as the other code runs extremely fast thanks to my Buffer lib
+        //as the other code runs extremely fast (Using double buffering as opposed to std::cout is to blame for this)
         if (ignoreInput > 50) { 
             if (GetAsyncKeyState(VK_UP)) {
                 selection = selection == 0 ? 2 : --selection;

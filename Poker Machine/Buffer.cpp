@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Buffer.h"
 
-
 Buffer::Buffer(int x, int y, byte bgDefault) {
     handle = GetStdHandle(STD_OUTPUT_HANDLE); //console output handle
     //init size
@@ -167,6 +166,7 @@ h4x0r Buffer::writeAt(char c, int x, int y, byte foregroundColour, byte backgrou
     buffer[x + size.X * y].Attributes = foregroundColour + backgroundColour;
 }
 
+//set the cursor position to desired values. Useful in 'BreakOut!'
 h4x0r Buffer::setCursorPosition(int x, int y) {
     column = x;
     row = y;

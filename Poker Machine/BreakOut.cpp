@@ -12,9 +12,10 @@ BreakOut::BreakOut() {
         }
     }
     while (gameRunning) gameloop();
-    if (quit) return;
+    if (quit) return; //if player elected to quit, go back to main menu
     buffer.clear();
     buffer.skipLine(5);
+    /* display info */
     if (won) {
         buffer.writeCentered("Congrats! You won!", F_BLACK, B_GREY);
     } else {
@@ -41,19 +42,24 @@ void BreakOut::gameloop() {
     }
 
     /* show lives left */
-    buffer.setCursorPosition(printOffset, 34);
+    buffer.setCursorPosition(printOffset, 34); //moves cursor to suitable position
     buffer.write("Lives: ", F_BLACK, B_GREY);
     for (int i = 1; i <= lives; i++) {
-        buffer.write({ char(3) }, F_LIGHT_RED, B_GREY);
+        // { char(3) } turns the char into a string using string's contructor for char *
+        buffer.write({ char(3) }, F_LIGHT_RED, B_GREY); //writes lives as hearts onto buffer
     }
     buffer.setCursorPosition(printOffset, 35);
     buffer.write("Blocks left: ", F_BLACK, B_GREY);
+    //to_string is required here. if it were not there, it will display the ASCII character that corresponds with the value of blocksLeft
     buffer.write(std::to_string(blocksLeft), F_DARK_AQUA, B_GREY);
     /* print bricks */
     byte colours[3] = { F_LIGHT_RED, F_LIGHT_AQUA, F_LIGHT_GREEN };
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 30; j++) {
+            //if the brick at this index is still 'alive'
+            //each time a block is hit, this number is decremented, and once it is 0 or lower, it is 'dead' and should no longer be displayed
             if (blocks[i][j] > 0) {
+                //get's all bricks and writes the to buffer with appropriate colour and position
                 buffer.writeAt(char(178), printOffset + 1 + j, 3 + i * 2, colours[blocks[i][j] - 1], B_GREY);
             }
         }
@@ -94,6 +100,7 @@ void BreakOut::gameloop() {
 
     /* print paddle */
     for (int i = 1; i <= 5; i++) {
+        //paddle is 5 chars long, for loop simplifies printing
         buffer.writeAt(char(219), paddle.x + printOffset + i, paddle.y, F_PURPLE, B_GREY);
     }
 
@@ -116,13 +123,17 @@ void BreakOut::gameloop() {
     }
     /* loss. reset game and subtract life */
     if (ballLocation.second > paddle.y + 1) {
-        buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED, B_GREY);
-        buffer.writeAt(char(0), printOffset + 6 + lives, 34, F_GREY, B_GREY);
-        lives--;
-        buffer.print();
+        buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED, B_GREY); //change ball colour to red
+        buffer.writeAt(char(0), printOffset + 6 + lives, 34, F_GREY, B_GREY); //removes last heart from buffer
+        lives--; //decrements lives counter
+        buffer.print(); //reprint onto screen with above modifications
+        //start reset
         ballDir = S;
         paddle = { 12, 30 };
         ballLocation = { 15, 15 };
+        //end reset
+
+        //cursor to suitable position
         buffer.setCursorPosition(printOffset, 37);
         if (lives > 0) {
             buffer.write("Would you like to play again?", F_LIGHT_GREEN, B_GREY);
@@ -133,17 +144,21 @@ void BreakOut::gameloop() {
             buffer.print();
             system("pause>nul");
         keyListen:
-            if (GetAsyncKeyState(VK_ESCAPE)) {
+            if (GetAsyncKeyState(VK_ESCAPE)) { //quit to menu
                 gameRunning = false;
                 quit = true;
+            //if any key other than enter, return to keyListen
+            //the next if will only pass if ENTER is pressed. if ENTER is pressed, it will continue the game
             } else if (!GetAsyncKeyState(VK_RETURN)) {
                 goto keyListen;
             }
+        //if out of lives
         } else {
             gameRunning = false;
             won = false;
         }
     }
+    /* Ball hitting paddle */
     if (ballLocation.second == paddle.y - 1) {
         if (ballLocation.first == paddle.x + 3) {
             ballDir = N;
@@ -155,7 +170,7 @@ void BreakOut::gameloop() {
     }
     //top row
     if (ballLocation.second == 3 && blocks[0][ballLocation.first - 1] > 0) {
-        blocks[0][ballLocation.first - 1]--;
+        blocks[0][ballLocation.first - 1]--; //decrements value at required position
         blocksLeft--;
         ballDir = getBounceDirection(ballDir);
     //middle row
@@ -173,17 +188,19 @@ void BreakOut::gameloop() {
         ballDir = getBounceDirection(ballDir);
         blocksLeft--;
     }
-    buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_AQUA, B_GREY);
-
+    //write ball onto screen at suitable position
+    buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_YELLOW, B_GREY);
     buffer.print();
-    clock_t t = clock();
+    //if all blocks have been destroyed
     if (blocksLeft == 0) {
         won = true;
         gameRunning = false;
     }
+    clock_t t = clock();
     while (clock() - t < 33.33) { /* 33.33ms delay */ }
 }
 
+//returns the relative bounce direction for all directions
 Direction BreakOut::getBounceDirection(Direction dir) {
     switch (dir) {
     case N:

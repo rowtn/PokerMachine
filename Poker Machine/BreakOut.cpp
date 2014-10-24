@@ -40,15 +40,6 @@ void BreakOut::gameloop() {
             }
         }
     }
-
-    if (GetAsyncKeyState(VK_LEFT)) {
-        if (paddle.x > 0) paddle.x--;
-    } else if (GetAsyncKeyState(VK_RIGHT)) {
-        if (paddle.x < 25) paddle.x++;
-    }
-    for (int i = 1; i <= 5; i++) {
-        buffer.writeAt(char(219), paddle.x + printOffset + i, paddle.y, F_PURPLE, B_GREY);
-    }
     switch (ballDir) {
     case S:
         ballLocation.second++;
@@ -73,6 +64,15 @@ void BreakOut::gameloop() {
         ballLocation.first--;
         break;
     }
+    if (GetAsyncKeyState(VK_LEFT)) {
+        if (paddle.x > 0) paddle.x--;
+    } else if (GetAsyncKeyState(VK_RIGHT)) {
+        if (paddle.x < 25) paddle.x++;
+    }
+    for (int i = 1; i <= 5; i++) {
+        buffer.writeAt(char(219), paddle.x + printOffset + i, paddle.y, F_PURPLE, B_GREY);
+    }
+
     if (ballLocation.first == 1 || ballLocation.first == 30) {
         switch (ballDir) {
         case NE:
@@ -89,23 +89,6 @@ void BreakOut::gameloop() {
             break;
         }
     }
-    if (ballLocation.second == 3) {
-        switch (ballDir) {
-        case N:
-            ballDir = S;
-            break;
-        case NE:
-            ballDir = SW;
-            break;
-        case NW:
-            ballDir = SE;
-            break;
-        default:
-            ballDir = S; //failsafe
-            break;
-        }
-    }
-
     /* loss. reset game and subtract life */
     if (ballLocation.second > paddle.y + 1) {
         buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED, B_GREY);
@@ -118,19 +101,46 @@ void BreakOut::gameloop() {
         system("pause>nul");
     }
     if (ballLocation.second == paddle.y - 1) {
-        //TODO: Explicit checks
-        if (ballLocation.first > paddle.x + 2 && ballLocation.first < paddle.x + 5) {
+        if (ballLocation.first == paddle.x + 3) {
             ballDir = N;
-        } 
-        if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
+        } else if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
             ballDir = NW;
-        } 
-        if (ballLocation.first >= paddle.x + 4 && ballLocation.first <= paddle.x + 5) {
+        } else if (ballLocation.first >= paddle.x + 4 && ballLocation.first <= paddle.x + 6) {
             ballDir = NE;
         }
+    }
+    if (ballLocation.second == 3 && blocks[0][ballLocation.first - 1] > 0) {
+        blocks[0][ballLocation.first - 1]--;
+        ballDir = getBounceDirection(ballDir);
+    } else if (ballLocation.second == 5 && blocks[1][ballLocation.first - 1] > 0) {
+        blocks[1][ballLocation.first - 1]--;
+        ballDir = getBounceDirection(ballDir);
+    } else if (ballLocation.second == 7 && blocks[2][ballLocation.first - 1] > 0) {
+        blocks[2][ballLocation.first - 1]--;
+        ballDir = getBounceDirection(ballDir);
+    } else if (ballLocation.second == 3) {
+        ballDir = getBounceDirection(ballDir);
     }
     buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_AQUA, B_GREY);
 
     buffer.print();
-    Sleep(40);
+    clock_t t = clock();
+    while (clock() - t < 33.33) { /* 33.33ms delay */ }
+}
+
+Direction BreakOut::getBounceDirection(Direction dir) {
+    switch (dir) {
+    case N:
+        return S;
+    case NE:
+        return SW;
+    case NW:
+        return SE;
+    case S:
+        return N;
+    case SE:
+        return NW;
+    case SW:
+        return NE;
+    }
 }

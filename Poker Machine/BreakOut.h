@@ -29,4 +29,5 @@ private:
 public:
     BreakOut();
     void gameloop();
+    Direction getBounceDirection(Direction);
 };

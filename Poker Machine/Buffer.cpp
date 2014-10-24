@@ -13,7 +13,7 @@ Buffer::Buffer(int x, int y, byte bgDefault) {
     clear(); //write blanks to buffer
 }
 
-h4x0r Buffer::write(std::string s) {
+void Buffer::write(std::string s) {
     for (auto &c : s) { //Gets every char in string
         if (c == '\n') { //if the char is \n, skip to next line
             row++;
@@ -32,7 +32,7 @@ h4x0r Buffer::write(std::string s) {
     }
 }
 
-h4x0r Buffer::writeLine(std::string s) {
+void Buffer::writeLine(std::string s) {
     column = size.X; //go to end of row
     for (auto &c : s) {
         if (c == '\n') {
@@ -51,11 +51,11 @@ h4x0r Buffer::writeLine(std::string s) {
     }
 }
 
-h4x0r Buffer::print() {
+void Buffer::print() {
     WriteConsoleOutputA(handle, buffer, size, coord, &region); //Dumps buffer into console screen
 }
 
-h4x0r Buffer::skipLine(int skips) {
+void Buffer::skipLine(int skips) {
     if (row + skips > size.Y) {
         throw "Text outside of buffer"; //throws error if skipping lines beyond the buffer size
     }
@@ -63,7 +63,7 @@ h4x0r Buffer::skipLine(int skips) {
     column = 0;
 }
 
-h4x0r Buffer::write(std::string s, byte foregroundColour) {
+void Buffer::write(std::string s, byte foregroundColour) {
     for (auto &c : s) {
         if (c == '\n') {
             row++;
@@ -81,7 +81,7 @@ h4x0r Buffer::write(std::string s, byte foregroundColour) {
     }
 }
 
-h4x0r Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) {
+void Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) {
     for (auto &c : s) {
         if (c == '\n') {
             row++;
@@ -101,7 +101,7 @@ h4x0r Buffer::write(std::string s, byte foregroundColour, byte backgroundColour)
     }
 }
 
-h4x0r Buffer::writeLine(std::string s, byte foregroundColour) {
+void Buffer::writeLine(std::string s, byte foregroundColour) {
     column = size.X;
     for (auto &c : s) {
         if (c == '\n') {
@@ -119,7 +119,7 @@ h4x0r Buffer::writeLine(std::string s, byte foregroundColour) {
     }
 }
 
-h4x0r Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundColour) {
+void Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundColour) {
     column = size.X;
     for (auto &c : s) {
         if (c == '\n') {
@@ -137,7 +137,7 @@ h4x0r Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundCol
     }
 }
 
-h4x0r Buffer::clear() {
+void Buffer::clear() {
     for (auto &c : buffer) { //loops through every element in buffer and sets it to a space (' ') with the default colour
         c.Char.AsciiChar = char(0);
         c.Attributes = defaultColour;
@@ -146,7 +146,7 @@ h4x0r Buffer::clear() {
     row = 0;
 }
 
-h4x0r Buffer::writeCentered(std::string s, byte foregroundColour, byte backgroundColour) {
+void Buffer::writeCentered(std::string s, byte foregroundColour, byte backgroundColour) {
     row++;
     column = (size.X / 2) - (s.length() / 2) + 1; //Calculates where the cursor must be set in order for the line to be centered
     for (auto &c : s) {
@@ -161,13 +161,13 @@ h4x0r Buffer::writeCentered(std::string s, byte foregroundColour, byte backgroun
 }
 
 //writes char at given location
-h4x0r Buffer::writeAt(char c, int x, int y, byte foregroundColour, byte backgroundColour) {
+void Buffer::writeAt(char c, int x, int y, byte foregroundColour, byte backgroundColour) {
     buffer[x + size.X * y].Char.AsciiChar = c;
     buffer[x + size.X * y].Attributes = foregroundColour + backgroundColour;
 }
 
 //set the cursor position to desired values. Useful in 'BreakOut!'
-h4x0r Buffer::setCursorPosition(int x, int y) {
+void Buffer::setCursorPosition(int x, int y) {
     column = x;
     row = y;
 }

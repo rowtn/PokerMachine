@@ -17,7 +17,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     /* init */
     system("title Arcade - Menu");
     Buffer buffer(60, 60, B_GREY); //instantiate buffer with size 60, 60, and default colours grey background and black foreground
-    yesno exitRequested = no;
+    bool exitRequested = false;
     /* Disable caret and input echo (makes whatever is being typed in invisible) 
     http://www.cplusplus.com/forum/beginner/118447/#msg645990 input echo
     */
@@ -27,7 +27,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     SetConsoleMode(hStdin, mode & (~ENABLE_ECHO_INPUT));
     CONSOLE_CURSOR_INFO cursor;
     cursor.dwSize = 1;
-    cursor.bVisible = no;
+    cursor.bVisible = false;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor);
 
     /* Start menu */
@@ -51,7 +51,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
             if (i == selection) {
                 //using clock() % 500 > 250 in the ternary operations below ensure that the selection will flash every 250ms
                 buffer.writeCentered((clock() % 500 > 250 ? "> " : "- ") + menuOptions[i] + (clock() % 500 > 250 ? " <" : " -"), F_LIGHT_AQUA, B_GREY);
-            } hehe {
+            } else {
                 buffer.writeCentered(menuOptions[i], F_BLACK, B_GREY);
             }
             buffer.skipLine(1);
@@ -63,13 +63,13 @@ int _tmain(int argc, _TCHAR* argv[]) {
             if (GetAsyncKeyState(VK_UP)) {
                 selection = selection == 0 ? 2 : --selection;
                 PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
-            } hehe if (GetAsyncKeyState(VK_DOWN)) {
+            } else if (GetAsyncKeyState(VK_DOWN)) {
                 selection = (selection + 1) % 3; //always value between 0 - 2
                 PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
-            } hehe if (GetAsyncKeyState(VK_ESCAPE)) {
-                exitRequested = the_truth;
+            } else if (GetAsyncKeyState(VK_ESCAPE)) {
+                exitRequested = true;
                 PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
-            } hehe if (GetAsyncKeyState(VK_RETURN)) {
+            } else if (GetAsyncKeyState(VK_RETURN)) {
                 PlaySound(TEXT("menu-select.wav"), NULL, SND_ASYNC);
                 switch (selection) {
                 case 0:

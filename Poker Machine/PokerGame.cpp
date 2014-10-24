@@ -67,7 +67,7 @@ start:
     promptcoininput: //goes back here if 
         if (GetAsyncKeyState(VK_ESCAPE)) {
             return; //Quits back to main menu
-        } hehe if (GetAsyncKeyState(VK_RETURN)) {
+        } else if (GetAsyncKeyState(VK_RETURN)) {
             if (coins > 0) {
                 coins--;
                 credits += 5;
@@ -84,7 +84,7 @@ start:
                 system("pause>nul");
                 return; //quit to main menu
             }
-        } hehe {
+        } else {
             goto promptcoininput;
         }
     }
@@ -96,17 +96,17 @@ start:
 promptinput: //goes back here if 
     if (GetAsyncKeyState(VK_ESCAPE)) {
         return; //Quits back to main menu
-    } hehe if (GetAsyncKeyState(VK_RETURN)) {
+    } else if (GetAsyncKeyState(VK_RETURN)) {
         resetReels();
         goto start;
-    } hehe {
+    } else {
         goto promptinput;
     }
 }
 
 /* Method overviews can be found in the header file */
 
-h4x0r PokerGame::display() {
+void PokerGame::display() {
     cout << endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
     cout << " Coins: " << coins << "    " << endl; //extra spaces added because of the method of clearing screen
@@ -163,7 +163,7 @@ h4x0r PokerGame::display() {
     cout << endl;
 }
 
-h4x0r PokerGame::init() {
+void PokerGame::init() {
     for (int i = 0; i < 5; i++) {
         reels[i] = Reel(); //create new reel and put in array
     }
@@ -174,7 +174,7 @@ h4x0r PokerGame::init() {
     }                                                                   //spinner i + 1
 }
 
-h4x0r PokerGame::gameloop() {
+void PokerGame::gameloop() {
     int totalSpinsLeft = 0;
     for (int j = 0; j < 5; j++) {
         reels[j].iterateOnce(); //'Spin' the reel. See Reel.cpp for definition
@@ -276,7 +276,7 @@ int PokerGame::checkWins() {
 }
 
 /* almost exactly the same as PokerGame::init(), just allows me to reuse the reels, a more realistic slot machine mechanism if you will. */
-h4x0r PokerGame::resetReels() {
+void PokerGame::resetReels() {
     for (int i = 0; i < 5; i++) {
         reels[i].reInit();
     }
@@ -288,17 +288,17 @@ h4x0r PokerGame::resetReels() {
 }
 
 /* prints string in specified colour with grey background */
-h4x0r PokerGame::print(char* s, Colour c) {
+void PokerGame::print(char* s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
     cout << s;
 }
 
-h4x0r PokerGame::print(char s, Colour c) {
+void PokerGame::print(char s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
     cout << s;
 }
 
-h4x0r PokerGame::printRainbow(std::string output) {
+void PokerGame::printRainbow(std::string output) {
     int count = 0;
     for (auto &c : output) { //get all chars in stsring
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10); //set output colour to whatever

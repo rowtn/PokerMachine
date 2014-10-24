@@ -209,7 +209,7 @@ int PokerGame::checkWins() {
         cardCount[it->getId()]++; //TODO: Create struct to hold both id's and suits
         //Checks if the next card along has a greater index (value)than the current (or if the card is a joker)
         //Also checks if there is a next iteration possible to avoid errors
-        if (it + 1 != mainHorzLine.end() && (it + 1)->getIdIndex() < it->getIdIndex() || it->getId() == JOKER) {
+        if (it + 1 != mainHorzLine.end() && (it + 1)->getIdIndex() <= it->getIdIndex() || it->getId() == JOKER) {
             straight = false;
         }
         //if the next card in the line isn't of the same suit, then a royal flush will not happen

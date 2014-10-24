@@ -18,4 +18,3 @@ public:
     int getSpinsLeft(void);
     void setSpins(int);
 };
-

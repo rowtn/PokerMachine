@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "PokerGame.h"
 #include "Buffer.h"
+#include "BreakOut.h"
 #include <Windows.h>
 #include <fstream>
 
@@ -73,7 +74,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
                     PokerGame();
                     break;
                 case 1:
-                    //Whatever Alfred is making
+                    BreakOut();
                     break;
                 case 2:exitRequested = true;
                     break;

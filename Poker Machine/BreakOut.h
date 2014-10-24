@@ -2,7 +2,7 @@
 #include "Buffer.h"
 
 enum Direction {
-    N, NE, E, SE, S, SW, W, NW
+    N, NE, E, SE, S, SW, W, NW, STOP
 };
 
 struct Paddle {
@@ -16,13 +16,13 @@ struct Paddle {
 class BreakOut {
 private:
     Buffer buffer = { 60, 60, B_GREY };
-    Paddle paddle = { 12, 30 };
+    Paddle paddle = { 22, 30 };
     //I cache the amount of blocks left on the screen so I do not have to iterate through the whole array to get the count
-    int blocksLeft = 90, printOffset = 14;
-    IntPair ballLocation = { 15, 15 };
-    Direction ballDir = S;
-    int paddleX, paddleY, lives = 5;
-    int blocks[3][30];
+    int blocksLeft = 150, printOffset = 4;
+    IntPair ballLocation = { 25, 29 };
+    Direction ballDir = STOP;
+    int paddleX, paddleY, lives = 3;
+    int blocks[3][50];
     const char ball = char(178);
     bool gameRunning = true;
     bool won = false;

@@ -3,17 +3,17 @@
 #include <string>
 
 BreakOut::BreakOut() {
-    //ballLocation.second = 15;
-    paddle.x = 12;
     buffer.clear();
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 30; j++) {
+        for (int j = 0; j < 50; j++) {
             blocks[i][j] = 3 - i;
         }
     }
     while (gameRunning) gameloop();
     if (quit) return; //if player elected to quit, go back to main menu
     buffer.clear();
+    buffer.skipLine(5);
+    buffer.writeCentered("Score (lower is better):" + std::to_string(blocksLeft), F_YELLOW, B_GREY);
     buffer.skipLine(5);
     /* display info */
     if (won) {
@@ -35,10 +35,15 @@ void BreakOut::gameloop() {
     /* clear buffer */
     buffer.clear();
     /* write walls */
-    for (int i = 0; i < 32; i++) {
+    for (int i = 0; i < 52; i++) {
         for (int j = 0; j < 32; j++) {
-            if (i == 0 || i == 31 || j == 0 || j == 31) buffer.writeAt(char(219), printOffset + i, 2 + j, F_BRIGHT_WHITE, B_GREY);
+            if (i == 0 || i == 51 || j == 0 || j == 31) buffer.writeAt(char(219), printOffset + i, 2 + j, F_BRIGHT_WHITE, B_GREY);
         }
+    }
+
+    if (ballDir == STOP) {
+        buffer.setCursorPosition(0, 15);
+        buffer.writeCentered("Press SPACE to begin!", F_BLACK, B_GREY);
     }
 
     /* show lives left */
@@ -55,7 +60,7 @@ void BreakOut::gameloop() {
     /* print bricks */
     byte colours[3] = { F_LIGHT_RED, F_LIGHT_AQUA, F_LIGHT_GREEN };
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 30; j++) {
+        for (int j = 0; j < 50; j++) {
             //if the brick at this index is still 'alive'
             //each time a block is hit, this number is decremented, and once it is 0 or lower, it is 'dead' and should no longer be displayed
             if (blocks[i][j] > 0) {
@@ -91,7 +96,7 @@ void BreakOut::gameloop() {
         break;
     }
     /* Ball hitting paddle */
-    if (ballLocation.second == paddle.y - 1) {
+    if (ballLocation.second == paddle.y - 1 && ballDir != STOP) {
         if (ballLocation.first == paddle.x + 3) {
             ballDir = N;
         } else if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
@@ -101,10 +106,12 @@ void BreakOut::gameloop() {
         }
     }
     /* move paddle */
-    if (GetAsyncKeyState(VK_LEFT)) {
-        if (paddle.x > 0) paddle.x--;
-    } else if (GetAsyncKeyState(VK_RIGHT)) {
-        if (paddle.x < 25) paddle.x++;
+    if (ballDir != STOP) {
+        if (GetAsyncKeyState(VK_LEFT)) {
+            if (paddle.x > 0) paddle.x--;
+        } else if (GetAsyncKeyState(VK_RIGHT)) {
+            if (paddle.x < 55) paddle.x++;
+        }
     }
 
     /* print paddle */
@@ -114,7 +121,7 @@ void BreakOut::gameloop() {
     }
 
     /* wall bounce */
-    if (ballLocation.first == 1 || ballLocation.first == 30) {
+    if (ballLocation.first == 1 || ballLocation.first == 50) {
         switch (ballDir) {
         case NE:
             ballDir = NW;
@@ -137,9 +144,9 @@ void BreakOut::gameloop() {
         lives--; //decrements lives counter
         buffer.print(); //reprint onto screen with above modifications
         //start reset
-        ballDir = S;
-        paddle = { 12, 30 };
-        ballLocation = { 15, 15 };
+        ballDir = STOP;
+        paddle = { 22, 30 };
+        ballLocation = { 25, 29 };
         //end reset
 
         //cursor to suitable position
@@ -199,6 +206,9 @@ void BreakOut::gameloop() {
         won = true;
         gameRunning = false;
     }
+    //this code is at the bottom so that the screen prints out. This ensures that the spacebar can only be pressed at the start of the game
+    //to start it. the ballDir will only ever be STOP at the start of each life
+    if (ballDir == STOP && GetAsyncKeyState(VK_SPACE)) ballDir = N;
     clock_t t = clock();
     while (clock() - t < 33.33) { /* 33.33ms delay */ }
 }

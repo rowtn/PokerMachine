@@ -18,7 +18,7 @@ private:
     Buffer buffer = { 60, 60, B_GREY };
     Paddle paddle = { 12, 30 };
     //I cache the amount of blocks left on the screen so I do not have to iterate through the whole array to get the count
-    int blocksLeft = 180, printOffset = 14;
+    int blocksLeft = 90, printOffset = 14;
     IntPair ballLocation = { 15, 15 };
     Direction ballDir = S;
     int paddleX, paddleY, lives = 5;

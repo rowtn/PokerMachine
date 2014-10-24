@@ -171,16 +171,19 @@ void BreakOut::gameloop() {
     //top row
     if (ballLocation.second == 3 && blocks[0][ballLocation.first - 1] > 0) {
         blocks[0][ballLocation.first - 1]--; //decrements value at required position
+        blocks[0][ballLocation.first]--;
         blocksLeft--;
         ballDir = getBounceDirection(ballDir);
     //middle row
     } else if (ballLocation.second == 5 && blocks[1][ballLocation.first - 1] > 0) {
         blocks[1][ballLocation.first - 1]--;
+        blocks[1][ballLocation.first]--;
         ballDir = getBounceDirection(ballDir);
         blocksLeft--;
     //bottom row
     } else if (ballLocation.second == 7 && blocks[2][ballLocation.first - 1] > 0) {
         blocks[2][ballLocation.first - 1]--;
+        blocks[2][ballLocation.first]--;
         ballDir = getBounceDirection(ballDir);
         blocksLeft--;
     //roof

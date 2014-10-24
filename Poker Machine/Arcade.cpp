@@ -30,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
     /* Start menu */
     int selection = 0;
-    string menuOptions[3] = { "Poker Machine", "Alfred's game", "Exit" };
+    string menuOptions[3] = { "Poker Machine", "BreakOut!", "Exit" };
     byte logoF = F_LIGHT_GREEN, logoBg = B_GREY;
     int ignoreInput = 0;
     while (!exitRequested) {

@@ -6,7 +6,7 @@ BreakOut::BreakOut() {
     //ballLocation.second = 15;
     buffer.clear();
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 15; j++) {
+        for (int j = 0; j < 30; j++) {
             blocks[i][j] = 3 - i;
         }
     }
@@ -25,12 +25,11 @@ void BreakOut::gameloop() {
             if (i == 0 || i == 31 || j == 0 || j == 31) buffer.writeAt(char(219), printOffset + i, 2 + j, F_BRIGHT_WHITE, B_GREY);
         }
     }
-    byte colours[3] = { F_LIGHT_RED, F_DARK_AQUA, F_DARK_GREEN };
+    byte colours[3] = { F_LIGHT_RED, F_LIGHT_AQUA, F_LIGHT_GREEN };
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 15; j++) {
+        for (int j = 0; j < 30; j++) {
             if (blocks[i][j] > 0) {
-                buffer.writeAt(char(201), printOffset + 1 + j * 2, 3 + i * 2, colours[blocks[i][j] - 1], B_GREY);
-                buffer.writeAt(char(187), printOffset + 2 + j * 2, 3 + i * 2, colours[blocks[i][j] - 1], B_GREY);
+                buffer.writeAt(char(178), printOffset + 1 + j, 3 + i * 2, colours[blocks[i][j] - 1], B_GREY);
             }
         }
     }
@@ -58,27 +57,64 @@ void BreakOut::gameloop() {
         ballLocation.second--;
         ballLocation.first--;
         break;
+    case SW:
+        ballLocation.second++;
+        ballLocation.first++;
+        break;
+    case SE:
+        ballLocation.second++;
+        ballLocation.first--;
+        break;
     }
-    if (ballLocation.second < 5) {
-        ballDir = S;
+    if (ballLocation.first == 1 || ballLocation.first == 30) {
+        switch (ballDir) {
+        case NE:
+            ballDir = NW;
+            break;
+        case NW:
+            ballDir = NE;
+            break;
+        case SE:
+            ballDir = SW;
+            break;
+        case SW:
+            ballDir = SE;
+            break;
+        }
+    }
+    if (ballLocation.second == 3) {
+        switch (ballDir) {
+        case N:
+            ballDir = S;
+            break;
+        case NE:
+            ballDir = SW;
+            break;
+        case NW:
+            ballDir = SE;
+            break;
+        default:
+            ballDir = S; //failsafe
+            break;
+        }
     }
     if (ballLocation.second > paddle.y + 2) {
         gameRunning = false;
     }
     if (ballLocation.second == paddle.y - 1) {
         //TODO: Explicit checks
-        if (ballLocation.first > paddle.x + 1 && ballLocation.first < paddle.x + 4) {
+        if (ballLocation.first > paddle.x + 2 && ballLocation.first < paddle.x + 5) {
             ballDir = N;
         } 
-        if (ballLocation.first == paddle.x + 1) {
+        if (ballLocation.first <= paddle.x + 2) {
             ballDir = NW;
         } 
-        if (ballLocation.first == paddle.x + 5) {
+        if (ballLocation.first >= paddle.x + 4) {
             ballDir = NE;
         }
     }
     buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_AQUA, B_GREY);
 
     buffer.print();
-    Sleep(100);
+    Sleep(40);
 }

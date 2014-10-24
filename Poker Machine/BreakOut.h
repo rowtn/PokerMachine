@@ -22,7 +22,7 @@ private:
     IntPair ballLocation = { 15, 15 };
     Direction ballDir = S;
     int paddleX, paddleY;
-    int blocks[3][15];
+    int blocks[3][30];
     const char ball = char(178);
     bool gameRunning = true;
     //const std::string paddleAvatar = { char(205), char(205), char(205) };

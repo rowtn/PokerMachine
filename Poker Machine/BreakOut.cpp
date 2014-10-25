@@ -13,7 +13,7 @@ BreakOut::BreakOut() {
     if (quit) return; //if player elected to quit, go back to main menu
     buffer.clear();
     buffer.skipLine(5);
-    buffer.writeCentered("Score (lower is better):" + std::to_string(blocksLeft), F_YELLOW, B_GREY);
+    buffer.writeCentered("Score: " + std::to_string((150 - blocksLeft) * 100), F_YELLOW, B_GREY);
     buffer.skipLine(5);
     /* display info */
     if (won) {
@@ -47,13 +47,13 @@ void BreakOut::gameloop() {
     }
 
     /* show lives left */
-    buffer.setCursorPosition(printOffset, 34); //moves cursor to suitable position
+    buffer.setCursorPosition(printOffset + 15, 34); //moves cursor to suitable position
     buffer.write("Lives: ", F_BLACK, B_GREY);
-    for (int i = 1; i <= lives; i++) {
+    for (int i = 1; i <= 3; i++) {
         // { char(3) } turns the char into a string using string's contructor for char *
-        buffer.write({ char(3) }, F_LIGHT_RED, B_GREY); //writes lives as hearts onto buffer
+        buffer.write({ char(3) }, i <= lives ? F_LIGHT_RED : F_BLACK, B_GREY); //writes lives as hearts onto buffer. lives lost are displayed as black
     }
-    buffer.setCursorPosition(printOffset, 35);
+    buffer.setCursorPosition(printOffset + 15, 35);
     buffer.write("Blocks left: ", F_BLACK, B_GREY);
     //to_string is required here. if it were not there, it will display the ASCII character that corresponds with the value of blocksLeft
     buffer.write(std::to_string(blocksLeft), F_DARK_AQUA, B_GREY);
@@ -110,7 +110,7 @@ void BreakOut::gameloop() {
         if (GetAsyncKeyState(VK_LEFT)) {
             if (paddle.x > 0) paddle.x--;
         } else if (GetAsyncKeyState(VK_RIGHT)) {
-            if (paddle.x < 55) paddle.x++;
+            if (paddle.x < 45) paddle.x++;
         }
     }
 
@@ -140,7 +140,7 @@ void BreakOut::gameloop() {
     /* loss. reset game and subtract life */
     if (ballLocation.second > paddle.y + 1) {
         buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED, B_GREY); //change ball colour to red
-        buffer.writeAt(char(0), printOffset + 6 + lives, 34, F_GREY, B_GREY); //removes last heart from buffer
+        buffer.writeAt(char(3), printOffset + 21 + lives, 34, F_BLACK, B_GREY); //removes last heart from buffer
         lives--; //decrements lives counter
         buffer.print(); //reprint onto screen with above modifications
         //start reset
@@ -170,6 +170,8 @@ void BreakOut::gameloop() {
             }
         //if out of lives
         } else {
+            buffer.writeCentered("You lost!. Press any key to view your score.", F_BLACK, B_GREY);
+            buffer.print();
             gameRunning = false;
             won = false;
         }

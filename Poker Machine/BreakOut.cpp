@@ -170,8 +170,12 @@ void BreakOut::gameloop() {
             }
         //if out of lives
         } else {
-            buffer.writeCentered("You lost!. Press any key to view your score.", F_BLACK, B_GREY);
+            buffer.setCursorPosition(0, 15);
+            buffer.writeCentered("You lost! Press any key to continue.", F_BLACK, B_GREY);
             buffer.print();
+            clock_t t = clock();
+            while (clock() - t < 1000) { /* 1 second delay */ }
+            system("pause>nul");
             gameRunning = false;
             won = false;
         }

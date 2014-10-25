@@ -37,22 +37,22 @@ int _tmain(int argc, _TCHAR* argv[]) {
     int ignoreInput = 0;
     while (!exitRequested) {
         /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
-        buffer.writeCentered(R"(  ____  ____      __   ____  ___      ___ )", logoF, logoBg);
-        buffer.writeCentered(R"( /    ||    \    /  ] /    ||   \    /  _])", logoF, logoBg);
-        buffer.writeCentered(R"(|  o  ||  D  )  /  / |  o  ||    \  /  [_ )", logoF, logoBg);
-        buffer.writeCentered(R"(|     ||    /  /  /  |     ||  D  ||    _])", logoF, logoBg);
-        buffer.writeCentered(R"(|  _  ||    \ /   \_ |  _  ||     ||   [_ )", logoF, logoBg);
-        buffer.writeCentered(R"(|  |  ||  .  \\     ||  |  ||     ||     |)", logoF, logoBg);
-        buffer.writeCentered(R"(|__|__||__|\_| \____||__|__||_____||_____|)", logoF, logoBg);
+        buffer.writeCentered(R"(  ____  ____      __   ____  ___      ___ )", logoF + logoBg);
+        buffer.writeCentered(R"( /    ||    \    /  ] /    ||   \    /  _])", logoF + logoBg);
+        buffer.writeCentered(R"(|  o  ||  D  )  /  / |  o  ||    \  /  [_ )", logoF + logoBg);
+        buffer.writeCentered(R"(|     ||    /  /  /  |     ||  D  ||    _])", logoF + logoBg);
+        buffer.writeCentered(R"(|  _  ||    \ /   \_ |  _  ||     ||   [_ )", logoF + logoBg);
+        buffer.writeCentered(R"(|  |  ||  .  \\     ||  |  ||     ||     |)", logoF + logoBg);
+        buffer.writeCentered(R"(|__|__||__|\_| \____||__|__||_____||_____|)", logoF + logoBg);
         buffer.skipLine(2);
         for (int i = 0; i < 3; i++) {
             buffer.skipLine(1);
             //Highlight selection and flash
             if (i == selection) {
                 //using clock() % 500 > 250 in the ternary operations below ensure that the selection will flash every 250ms
-                buffer.writeCentered((clock() % 500 > 250 ? "> " : "- ") + menuOptions[i] + (clock() % 500 > 250 ? " <" : " -"), F_LIGHT_AQUA, B_GREY);
+                buffer.writeCentered((clock() % 500 > 250 ? "> " : "- ") + menuOptions[i] + (clock() % 500 > 250 ? " <" : " -"), F_LIGHT_AQUA + B_GREY);
             } else {
-                buffer.writeCentered(menuOptions[i], F_BLACK, B_GREY);
+                buffer.writeCentered(menuOptions[i], F_BLACK + B_GREY);
             }
             buffer.skipLine(1);
         }

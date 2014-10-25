@@ -51,11 +51,9 @@ public:
     void write(std::string);
     void writeLine(std::string);
     void write(std::string, byte);
-    void write(std::string, byte, byte);
     void writeLine(std::string, byte);
-    void writeLine(std::string, byte, byte);
-    void writeCentered(std::string, byte, byte);
-    void writeAt(char, int, int, byte, byte);
+    void writeCentered(std::string, byte);
+    void writeAt(char, int, int, byte);
 
     //fills buffer with empty CHAR_INFOs
     void clear(void);

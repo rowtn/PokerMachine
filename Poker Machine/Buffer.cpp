@@ -63,7 +63,7 @@ void Buffer::skipLine(int skips) {
     column = 0;
 }
 
-void Buffer::write(std::string s, byte foregroundColour) {
+void Buffer::write(std::string s, byte colour) {
     for (auto &c : s) {
         if (c == '\n') {
             row++;
@@ -72,7 +72,7 @@ void Buffer::write(std::string s, byte foregroundColour) {
         }
         //same as above
         buffer[column + size.X * row].Char.AsciiChar = c;
-        buffer[column + size.X * row].Attributes = foregroundColour; //default bg colour will be black
+        buffer[column + size.X * row].Attributes = colour; //default bg colour will be black
         column++;
         if (column % size.X == 0) {
             column = 0;
@@ -81,27 +81,21 @@ void Buffer::write(std::string s, byte foregroundColour) {
     }
 }
 
-void Buffer::write(std::string s, byte foregroundColour, byte backgroundColour) {
+void Buffer::writeCentered(std::string s, byte colour) {
+    row++;
+    column = (size.X / 2) - (s.length() / 2) + 1; //Calculates where the cursor must be set in order for the line to be centered
     for (auto &c : s) {
-        if (c == '\n') {
-            row++;
-            column = 0;
-            continue;
-        }
         buffer[column + size.X * row].Char.AsciiChar = char(c);
-        //e.g. 0x0007 + 0x0050 = 0x0057
-        //allows for having both foregound and background colours.
-        //although this could have been done in one method, it makes it easier to understand for those unfamiliar, and improves readability
-        buffer[column + size.X * row].Attributes = foregroundColour + backgroundColour;
+        buffer[column + size.X * row].Attributes = colour;
         column++;
         if (column % size.X == 0) {
-            column = 0;
+            column = (size.X / 2) - (s.length() / 2) + 1;
             row++;
         }
     }
 }
 
-void Buffer::writeLine(std::string s, byte foregroundColour) {
+void Buffer::writeLine(std::string s, byte colour) {
     column = size.X;
     for (auto &c : s) {
         if (c == '\n') {
@@ -110,25 +104,7 @@ void Buffer::writeLine(std::string s, byte foregroundColour) {
             continue;
         }
         buffer[column + size.X * row].Char.AsciiChar = char(c);
-        buffer[column + size.X * row].Attributes = foregroundColour;
-        column++;
-        if (column % size.X == 0) {
-            column = 0;
-            row++;
-        }
-    }
-}
-
-void Buffer::writeLine(std::string s, byte foregroundColour, byte backgroundColour) {
-    column = size.X;
-    for (auto &c : s) {
-        if (c == '\n') {
-            row++;
-            column = 0;
-            continue;
-        }
-        buffer[column + size.X * row].Char.AsciiChar = char(c);
-        buffer[column + size.X * row].Attributes = foregroundColour + backgroundColour;
+        buffer[column + size.X * row].Attributes = colour;
         column++;
         if (column % size.X == 0) {
             column = 0;
@@ -146,24 +122,10 @@ void Buffer::clear() {
     row = 0;
 }
 
-void Buffer::writeCentered(std::string s, byte foregroundColour, byte backgroundColour) {
-    row++;
-    column = (size.X / 2) - (s.length() / 2) + 1; //Calculates where the cursor must be set in order for the line to be centered
-    for (auto &c : s) {
-        buffer[column + size.X * row].Char.AsciiChar = char(c);
-        buffer[column + size.X * row].Attributes = foregroundColour + backgroundColour;
-        column++;
-        if (column % size.X == 0) {
-            column = (size.X / 2) - (s.length() / 2) + 1;
-            row++;
-        }
-    }
-}
-
 //writes char at given location
-void Buffer::writeAt(char c, int x, int y, byte foregroundColour, byte backgroundColour) {
+void Buffer::writeAt(char c, int x, int y, byte colour) {
     buffer[x + size.X * y].Char.AsciiChar = c;
-    buffer[x + size.X * y].Attributes = foregroundColour + backgroundColour;
+    buffer[x + size.X * y].Attributes = colour;
 }
 
 //set the cursor position to desired values. Useful in 'BreakOut!'

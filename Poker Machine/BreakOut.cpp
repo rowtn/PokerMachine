@@ -13,7 +13,15 @@ BreakOut::BreakOut() {
     if (quit) return; //if player elected to quit, go back to main menu
     buffer.clear();
     buffer.skipLine(5);
-    buffer.writeCentered("Score: " + std::to_string((150 - blocksLeft) * 100), F_YELLOW + B_GREY);
+    int score = (150 - blocksLeft) * 100; //final score
+    int display = 0; //number to display
+    //this block will display the score in a fancy way 
+    while (display != score) {
+        //increment display by 10 until it is equal to the final score
+        buffer.writeCentered("Score: " + std::to_string(display += 10), F_YELLOW + B_GREY);
+        buffer.print();
+        buffer.skipLine(-1); //move line back up to overwrite Score display line
+    }
     buffer.skipLine(5);
     /* display info */
     if (won) {

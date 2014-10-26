@@ -35,15 +35,23 @@ int _tmain(int argc, _TCHAR* argv[]) {
     string menuOptions[3] = { "Poker Machine", "BreakOut!", "Exit" };
     byte logoF = F_LIGHT_GREEN, logoBg = B_GREY;
     int ignoreInput = 0;
+    /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
+    string asciiLogo[7] = { 
+        R"(  ____  ____      __   ____  ___      ___   _   )",
+        R"( /    ||    \    /  ] /    ||   \    /  _] | |  )",
+        R"(|  o  ||  D  )  /  / |  o  ||    \  /  [_  | |  )",
+        R"(|     ||    /  /  /  |     ||  D  ||    _] | |  )",
+        R"(|  _  ||    \ /   \_ |  _  ||     ||   [_  | |  )",
+        R"(|  |  ||  .  \\     ||  |  ||     ||     | |_|  )",
+        R"(|__|__||__|\_| \____||__|__||_____||_____|  o   )"
+    };
+    int scroll = 0;
     while (!exitRequested) {
-        /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
-        buffer.writeCentered(R"(  ____  ____      __   ____  ___      ___ )", logoF + logoBg);
-        buffer.writeCentered(R"( /    ||    \    /  ] /    ||   \    /  _])", logoF + logoBg);
-        buffer.writeCentered(R"(|  o  ||  D  )  /  / |  o  ||    \  /  [_ )", logoF + logoBg);
-        buffer.writeCentered(R"(|     ||    /  /  /  |     ||  D  ||    _])", logoF + logoBg);
-        buffer.writeCentered(R"(|  _  ||    \ /   \_ |  _  ||     ||   [_ )", logoF + logoBg);
-        buffer.writeCentered(R"(|  |  ||  .  \\     ||  |  ||     ||     |)", logoF + logoBg);
-        buffer.writeCentered(R"(|__|__||__|\_| \____||__|__||_____||_____|)", logoF + logoBg);
+        for (std::string &text : asciiLogo) {
+            if (scroll % 30 == 0) text = text.substr(1, text.length()) + text.substr(0, 1);
+            buffer.writeCentered(text, logoF + logoBg);
+        }
+        scroll++;
         buffer.skipLine(2);
         for (int i = 0; i < 3; i++) {
             buffer.skipLine(1);

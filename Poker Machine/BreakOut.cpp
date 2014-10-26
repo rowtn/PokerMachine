@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "BreakOut.h"
 #include <string>
+#include <thread>
 
 BreakOut::BreakOut() {
     buffer.clear();
@@ -19,6 +20,7 @@ BreakOut::BreakOut() {
     while (display != score) {
         //increment display by 10 until it is equal to the final score
         buffer.writeCentered("Score: " + std::to_string(display += 10), F_YELLOW + B_GREY);
+        std::thread(Beep, display, 20).detach();
         buffer.print();
         buffer.skipLine(-1); //move line back up to overwrite Score display line
     }
@@ -147,6 +149,8 @@ void BreakOut::gameloop() {
     }
     /* loss. reset game and subtract life */
     if (ballLocation.second > paddle.y + 1) {
+        //sound source: http://www.soundjay.com/misc/sounds/fail-trombone-01.mp3
+        PlaySound(TEXT("poker-lose.wav"), NULL, SND_ASYNC);
         buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED + B_GREY); //change ball colour to red
         buffer.writeAt(char(3), printOffset + 21 + lives, 34, F_BLACK + B_GREY); //removes last heart from buffer
         lives--; //decrements lives counter
@@ -193,18 +197,21 @@ void BreakOut::gameloop() {
 
     //top row
     if (ballLocation.second == 3 && blocks[0][ballLocation.first - 1] > 0) {
+        std::thread(Beep, blocks[0][ballLocation.first - 1] * 100 + 500, 100).detach();
         blocks[0][ballLocation.first - 1]--; //decrements value at required position
         blocks[0][ballLocation.first]--;
         blocksLeft--;
         ballDir = getBounceDirection(ballDir);
         //middle row
     } else if (ballLocation.second == 5 && blocks[1][ballLocation.first - 1] > 0) {
+        std::thread(Beep, blocks[1][ballLocation.first - 1] * 100 + 500, 100).detach();
         blocks[1][ballLocation.first - 1]--;
         blocks[1][ballLocation.first]--;
         ballDir = getBounceDirection(ballDir);
         blocksLeft--;
         //bottom row
     } else if (ballLocation.second == 7 && blocks[2][ballLocation.first - 1] > 0) {
+        std::thread(Beep, blocks[2][ballLocation.first - 1] * 100 + 500, 100).detach();
         blocks[2][ballLocation.first - 1]--;
         blocks[2][ballLocation.first]--;
         ballDir = getBounceDirection(ballDir);
@@ -219,6 +226,8 @@ void BreakOut::gameloop() {
     buffer.print();
     //if all blocks have been destroyed
     if (blocksLeft == 0) {
+        //sound source: http://www.freesfx.co.uk/download/?type=mp3&id=3928
+        PlaySound(TEXT("poker-win.wav"), NULL, SND_ASYNC);
         won = true;
         gameRunning = false;
     }

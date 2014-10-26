@@ -47,11 +47,16 @@ int _tmain(int argc, _TCHAR* argv[]) {
     };
     int scroll = 0;
     while (!exitRequested) {
-        for (std::string &text : asciiLogo) {
-            if (scroll % 30 == 0) text = text.substr(1, text.length()) + text.substr(0, 1);
-            buffer.writeCentered(text, logoF + logoBg);
+        static clock_t t = clock();
+        bool scroll = false;
+        if (clock() - t > 50) {
+            t = clock();
+            scroll = true;
         }
-        scroll++;
+        for (std::string &text : asciiLogo) {
+            if (scroll) text = text.substr(1, text.length()) + text.substr(0, 1);
+            buffer.writeCentered(text.substr(0, text.length() <= 58 ? text.length() : 58), logoF + logoBg);
+        }
         buffer.skipLine(2);
         for (int i = 0; i < 3; i++) {
             buffer.skipLine(1);

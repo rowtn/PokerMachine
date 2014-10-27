@@ -5,8 +5,6 @@
 #include <Windows.h>
 #include <fstream>
 
-using namespace std;
-
 int _tmain(int argc, _TCHAR* argv[]) {
     /* Resize window */
     system("mode 60,60");
@@ -32,11 +30,11 @@ int _tmain(int argc, _TCHAR* argv[]) {
 
     /* Start menu */
     int selection = 0;
-    string menuOptions[3] = { "Poker Machine", "BreakOut!", "Exit" };
+    std::string menuOptions[3] = { "Poker Machine", "BreakOut!", "Exit" };
     byte logoF = F_LIGHT_GREEN, logoBg = B_GREY;
     int ignoreInput = 0;
     /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
-    string asciiLogo[8] = {                                                                                         
+    std::string asciiLogo[8] = {                                                                                         
         R"(           db                                                      88              88    )",  
         R"(          d88b                                                     88              88    )",
         R"(         d8'`8b                                                    88              88    )",

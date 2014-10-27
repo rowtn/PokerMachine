@@ -3,9 +3,6 @@
 #include <thread>
 #include <mmsystem.h>
 #include <algorithm>
-
-using namespace std;
-
 //Originally the main function
 
 PokerGame::PokerGame() {
@@ -13,7 +10,7 @@ PokerGame::PokerGame() {
     init();
     system("cls");
     system("color 8a");
-    cout << endl << endl << endl;
+    std::cout << std::endl << std::endl << std::endl;
     delayedPrint("Welcome to Pokies! Enjoy your stay");
     delayedPrint("You will start out with 5 credits.");
     delayedPrint("You will earn coins for any wins!");
@@ -21,7 +18,7 @@ PokerGame::PokerGame() {
     delayedPrint("trade a coin in for credits and keep");
     delayedPrint("playing. Or you could quit to the");
     delayedPrint("main menu and try BreakOut!");
-    cout << endl;
+    std::cout << std::endl;
     delayedPrint("Press any key to continue!");
     system("pause>nul");
 start:
@@ -41,9 +38,9 @@ start:
         COORD position = { 0, 0 };
         SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
         gameloop();
-        if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration.  " << endl;
+        if (DEBUG) std::cout << std::endl << " " << clock() - t << "ms taken for iteration.  " << std::endl;
         display();
-        if (DEBUG) cout << endl << " " << clock() - t << "ms taken for iteration and display." << endl;
+        if (DEBUG) std::cout << std::endl << " " << clock() - t << "ms taken for iteration and display." << std::endl;
         //This pauses the thread for 100 milliseconds since the last iteration
         while (clock() - t < 100) { /* Empty */ }
     }
@@ -57,13 +54,13 @@ start:
         PlaySound(TEXT("poker-lose.wav"), NULL, SND_ASYNC);
     }
     if (credits <= 0 && coins <= 0) {
-        cout << "\tSorry, you don't have any coins\n\t or credits. Press any key to return to the main menu";
+        std::cout << "\tSorry, you don't have any coins\n\t or credits. Press any key to return to the main menu";
         system("pause>nul");
         return; //return to menu
     }
     if (credits <= 0) {
-        cout << "\tYou are out of credits.\n\tWould you like to trade a coin for 5 credits?" << endl;
-        cout << "\tPress ENTER to add more credits,\n\tor ESCAPE to count your losses" << endl;
+        std::cout << "\tYou are out of credits.\n\tWould you like to trade a coin for 5 credits?" << std::endl;
+        std::cout << "\tPress ENTER to add more credits,\n\tor ESCAPE to count your losses" << std::endl;
     promptcoininput: //goes back here if 
         if (GetAsyncKeyState(VK_ESCAPE)) {
             return; //Quits back to main menu
@@ -77,7 +74,7 @@ start:
                 display();
                 goto start;
             } else {
-                cout << "\n\tSorry, you do not have enough coins to continue.\n\tPress any key to go back to the menu." << endl;
+                std::cout << "\n\tSorry, you do not have enough coins to continue.\n\tPress any key to go back to the menu." << std::endl;
                 COORD position = { 0, 0 };
                 SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), position);
                 display();
@@ -107,18 +104,18 @@ promptinput: //goes back here if
 /* Method overviews can be found in the header file */
 
 void PokerGame::display() {
-    cout << endl;
+    std::cout << std::endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREEN + 0x0080);
-    cout << " Coins: " << coins << "    " << endl; //extra spaces added because of the method of clearing screen
-    cout << " Credits: " << credits << "     " << endl;
+    std::cout << " Coins: " << coins << "    " << std::endl; //extra spaces added because of the method of clearing screen
+    std::cout << " Credits: " << credits << "     " << std::endl;
     /* Card shorthand legend */
-    cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << endl;
-    cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << endl;
+    std::cout << " Cards>>  Ace: " << ACE << "  Nine: " << NINE << "  Ten: " << TEN << std::endl;
+    std::cout << " Cards>>  Jack: " << JACK << "  Queen: " << QUEEN << "  King:  " << KING << "  Joker: " << JOKER << std::endl;
     for (int i = 0; i < 3; i++) {
         //You cannot have fancy ASCII characters in string literals. When compiled, it outputs as '?'.
         //To avoid this, you must construct an array of the characters. The number passed to the contructor
         //is an ASCII code. @source http://asciitable.com/
-        string bar;
+        std::string bar;
         if (i == 0) {
             bar = { char(201), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(203), char(205), char(205), char(205), char(187) };
         } else if (i == 1 || i == 2) {
@@ -126,8 +123,8 @@ void PokerGame::display() {
         }
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR + 0x0080);
 
-        cout << endl << "\t\t  " << bar << endl;
-        cout << "\t\t  ";
+        std::cout << std::endl << "\t\t  " << bar << std::endl;
+        std::cout << "\t\t  ";
         for (int j = 0; j < 5; j++) {
             /*
             Originally I was using std::list.
@@ -139,7 +136,7 @@ void PokerGame::display() {
             PokerCard card = reels[j].getCards().at(i);
             if (i == 1) { //Middle row. This row uses a slightly different colour scheme to highlight it
                 //print is a function defined at the bottom of the file.
-                //It will take in a string or char and cout it with the specified colour
+                //It will take in a string or char and std::cout it with the specified colour
                 print(char(186), BORDER_COLOUR);
                 //ternary operators are used here to colourise the suit when displaying
                 //SPADES and CLUBS are aqua, and HEARTS and DIAMONDS are red.
@@ -156,11 +153,11 @@ void PokerGame::display() {
             }
         }
     }
-    string bar = { char(200), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(188) };
+    std::string bar = { char(200), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(202), char(205), char(205), char(205), char(188) };
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BORDER_COLOUR + 0x0080);
-    cout << endl << "\t\t  " << bar << endl;
+    std::cout << std::endl << "\t\t  " << bar << std::endl;
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), LIGHT_GREY + 0x0080);
-    cout << endl;
+    std::cout << std::endl;
 }
 
 void PokerGame::init() {
@@ -180,7 +177,7 @@ void PokerGame::gameloop() {
         reels[j].iterateOnce(); //'Spin' the reel. See Reel.cpp for definition
         totalSpinsLeft += reels[j].getSpinsLeft();
     }
-    thread(Beep, totalSpinsLeft * 7 + 500, 50).detach(); //sound decsending in pitch as game nears end
+    std::thread(Beep, totalSpinsLeft * 7 + 500, 50).detach(); //sound decsending in pitch as game nears end
     slotsRunning = totalSpinsLeft > 0; //If no more spins are left, stop from running
 }
 
@@ -190,19 +187,19 @@ int PokerGame::checkWins() {
 
     /* Create vectors holding horizontal lines */
     clock_t t = clock(); //Used for debug
-    vector<PokerCard> mainHorzLine;
+    std::vector<PokerCard> mainHorzLine;
     for (int i = 0; i < 5; i++) {
         if (!DEBUG) mainHorzLine.push_back(reels[i].getCards().at(1));
         else mainHorzLine.push_back(PokerCard(i + 2, 1));// [Debug used to check for straights]
     }
     /* Count the cards, check for straights */
-    map<char, int> cardCount;
+    std::map<char, int> cardCount;
     bool straight = true; //Used to detect straights from ltr and rtl
     bool flushIO = true; //Flush in order
     bool flushUO = true; //unordered flush
     int royalFlushCards[5]; //store the card values (no suit). Used for unordered royal flush. the array gets sorted and then a flush is checked for
     int rFCCounter = 0; //counter
-    for (vector<PokerCard>::iterator it = mainHorzLine.begin(); it != mainHorzLine.end(); ++it) {
+    for (std::vector<PokerCard>::iterator it = mainHorzLine.begin(); it != mainHorzLine.end(); ++it) {
         royalFlushCards[rFCCounter++] = it->getIdIndex();
         //if the first card isn't a 10, then a royal flush isn't possible
         if (it->getId() != TEN && it == mainHorzLine.begin()) flushIO = false;
@@ -225,7 +222,7 @@ int PokerGame::checkWins() {
             if (royalFlushCards[i] > royalFlushCards[i + 1]) flushUO = false; //if the next card has a lower value, it isn't a royal flush
         }
     }
-    if (DEBUG) cout << "Straight: " << straight << endl;
+    if (DEBUG) std::cout << "Straight: " << straight << std::endl;
     //if win of whatever type, and winning prize is more than current winning amount, set winnings to new amount
     //ensures only the highest valued prize is given
     winnings = straight && STRAIGHT > winnings ? STRAIGHT : winnings;
@@ -233,26 +230,26 @@ int PokerGame::checkWins() {
     winnings = flushUO && UO_R_FLUSH > winnings ? UO_R_FLUSH : winnings;
     /* Check for * of a kind */
     int jokers = cardCount[JOKER];
-    for (map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {
+    for (std::map<char, int>::iterator it = cardCount.begin(); it != cardCount.end(); ++it) {
         if (it->first != JOKER) it->second += jokers; //Jokers count as any cards, so each count is increased by one
         switch (it->second) {
             //TODO Change int literals to const ints declared at top of file
         case 5:
             //Five of a kind
-            if (DEBUG) cout << it->first << ": 5oaK" << endl;
+            if (DEBUG) std::cout << it->first << ": 5oaK" << std::endl;
             winnings = FIVE_K > winnings ? FIVE_K : winnings;
             break;
         case 4:
             //Four of a kind
-            if (DEBUG) cout << it->first << ": 4oaK" << endl;
+            if (DEBUG) std::cout << it->first << ": 4oaK" << std::endl;
             winnings = FOUR_K > winnings ? FOUR_K : winnings;
             break;
         case 3:
-            if (DEBUG) cout << it->first << ": 3oaK" << endl;
+            if (DEBUG) std::cout << it->first << ": 3oaK" << std::endl;
             winnings = THREE_K > winnings ? THREE_K : winnings;
             break;
         case 2:
-            if (DEBUG) cout << it->first << ": 2oaK" << endl;
+            if (DEBUG) std::cout << it->first << ": 2oaK" << std::endl;
             winnings = TWO_K > winnings ? TWO_K : winnings;
             break;
         }
@@ -261,15 +258,15 @@ int PokerGame::checkWins() {
     /* For Each */
     if (DEBUG) {
         for (auto &card : mainHorzLine) {
-            cout << "    " << card.getId() << " ";
+            std::cout << "    " << card.getId() << " ";
         }
     }
 
     /* Note: the order in which the different times of wins are detected are irrelevant as I am ensuring only the highest payout is paid */
 
-    if (DEBUG) cout << endl << " " << clock() - t << "ms taken for winnings check." << endl;
+    if (DEBUG) std::cout << std::endl << " " << clock() - t << "ms taken for winnings check." << std::endl;
 
-    cout << "\tTotal winnings for this round = " << winnings << endl;
+    std::cout << "\tTotal winnings for this round = " << winnings << std::endl;
     //if (winnings > 0) printRainbow("\t\t  YOU WIN!\n");
     coins += winnings;
     return winnings;
@@ -290,19 +287,19 @@ void PokerGame::resetReels() {
 /* prints string in specified colour with grey background */
 void PokerGame::print(char* s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
-    cout << s;
+    std::cout << s;
 }
 
 void PokerGame::print(char s, Colour c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c + 0x0080);
-    cout << s;
+    std::cout << s;
 }
 
 void PokerGame::printRainbow(std::string output) {
     int count = 0;
     for (auto &c : output) { //get all chars in stsring
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), ++count % 5 + 10); //set output colour to whatever
-        cout << c;
+        std::cout << c;
     }
 }
 
@@ -315,10 +312,10 @@ void PokerGame::delayedPrint(std::string s) {
     SetConsoleCursorPosition(hcon, position);
     bool skip = false;
     for (char c : s) {
-        cout << c;
+        std::cout << c;
         clock_t t = clock();
         while (clock() - t < 50 && !skip) { /* Delay of 50ms */ }
         if (GetAsyncKeyState(VK_SPACE) || GetAsyncKeyState(VK_RETURN)) skip = true;
     }
-    cout << endl;
+    std::cout << std::endl;
 }

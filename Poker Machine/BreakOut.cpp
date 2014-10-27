@@ -143,11 +143,15 @@ void BreakOut::gameloop() {
         }
     }
     /* move paddle */
-    if (ballDir != STOP) {
-        if (GetAsyncKeyState(VK_LEFT)) {
-            if (paddle.x > 0) paddle.x--;
-        } else if (GetAsyncKeyState(VK_RIGHT)) {
-            if (paddle.x < 45) paddle.x++;
+    if (GetAsyncKeyState(VK_LEFT)) {
+        if (paddle.x > 0) {
+            paddle.x -= 2;
+            if (ballDir == STOP) ballLocation.first -= 2;
+        }
+    } else if (GetAsyncKeyState(VK_RIGHT)) {
+        if (paddle.x < 44) {
+            paddle.x += 2;
+            if (ballDir == STOP) ballLocation.first += 2;
         }
     }
 

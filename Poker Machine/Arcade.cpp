@@ -36,14 +36,15 @@ int _tmain(int argc, _TCHAR* argv[]) {
     byte logoF = F_LIGHT_GREEN, logoBg = B_GREY;
     int ignoreInput = 0;
     /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
-    string asciiLogo[7] = { 
-        R"(  ____  ____      __   ____  ___      ___   _   )",
-        R"( /    ||    \    /  ] /    ||   \    /  _] | |  )",
-        R"(|  o  ||  D  )  /  / |  o  ||    \  /  [_  | |  )",
-        R"(|     ||    /  /  /  |     ||  D  ||    _] | |  )",
-        R"(|  _  ||    \ /   \_ |  _  ||     ||   [_  | |  )",
-        R"(|  |  ||  .  \\     ||  |  ||     ||     | |_|  )",
-        R"(|__|__||__|\_| \____||__|__||_____||_____|  o   )"
+    string asciiLogo[8] = {                                                                                         
+        R"(           db                                                      88              88    )",  
+        R"(          d88b                                                     88              88    )",
+        R"(         d8'`8b                                                    88              88    )",
+        R"(        d8'  `8b      8b,dPPYba,   ,adPPYba,  ,adPPYYba,   ,adPPYb,88   ,adPPYba,  88    )",
+        R"(       d8YaaaaY8b     88P'   "Y8  a8"     ""  ""     `Y8  a8"    `Y88  a8P_____88  88    )",
+        R"(      d8""""""""8b    88          8b          ,adPPPPP88  8b       88  8PP"""""""  ""    )",
+        R"(     d8'        `8b   88          "8a,   ,aa  88,    ,88  "8a,   ,d88  "8b,   ,aa  aa    )",
+        R"(    d8'          `8b  88           `"Ybbd8"'  `"8bbdP"Y8   `"8bbdP"Y8   `"Ybbd8"'  88    )"
     };
     int scroll = 0;
     while (!exitRequested) {
@@ -55,7 +56,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
         }
         for (std::string &text : asciiLogo) {
             if (scroll) text = text.substr(1, text.length()) + text.substr(0, 1);
-            buffer.writeCentered(text.substr(0, text.length() <= 58 ? text.length() : 58), logoF + logoBg);
+            buffer.writeCentered(text.substr(0, text.length() <= 50 ? text.length() : 50), logoF + logoBg);
         }
         buffer.skipLine(2);
         for (int i = 0; i < 3; i++) {

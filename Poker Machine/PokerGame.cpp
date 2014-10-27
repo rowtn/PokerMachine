@@ -313,10 +313,12 @@ void PokerGame::delayedPrint(std::string s) {
     GetConsoleScreenBufferInfo(hcon, &con);
     position.Y = con.dwCursorPosition.Y;
     SetConsoleCursorPosition(hcon, position);
+    bool skip = false;
     for (char c : s) {
         cout << c;
         clock_t t = clock();
-        while (clock() - t < 50) { /* Delay of 50ms */ }
+        while (clock() - t < 50 && !skip) { /* Delay of 50ms */ }
+        if (GetAsyncKeyState(VK_SPACE) || GetAsyncKeyState(VK_RETURN)) skip = true;
     }
     cout << endl;
 }

@@ -13,7 +13,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), true, WinSize);
 
     /* init */
-    system("title Arcade - Menu");
+    system("title Arcade! - Menu");
     Buffer buffer(60, 60, B_GREY); //instantiate buffer with size 60, 60, and default colours grey background and black foreground
     bool exitRequested = false;
     /* Disable caret and input echo (makes whatever is being typed in invisible) 
@@ -32,7 +32,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
     int selection = 0;
     std::string menuOptions[3] = { "Poker Machine", "BreakOut!", "Exit" };
     byte logoF = F_LIGHT_GREEN, logoBg = B_GREY;
-    int ignoreInput = 0;
+    clock_t ignoreInput = clock();
     /* Use of R"(<string>)" allows me to write special chars without escaping e.g. '\' instead of '\\' */
     std::string asciiLogo[8] = {                                                                                         
         R"(           db                                                      88              88    )",  
@@ -45,6 +45,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
         R"(    d8'          `8b  88           `"Ybbd8"'  `"8bbdP"Y8   `"8bbdP"Y8   `"Ybbd8"'  88    )"
     };
     int scroll = 0;
+    //std::string title = "       Arcade! - Menu      ";
     while (!exitRequested) {
         static clock_t t = clock();
         bool scroll = false;
@@ -56,6 +57,10 @@ int _tmain(int argc, _TCHAR* argv[]) {
             if (scroll) text = text.substr(1, text.length()) + text.substr(0, 1);
             buffer.writeCentered(text.substr(0, text.length() <= 50 ? text.length() : 50), logoF + logoBg);
         }
+        /*if (scroll) {
+            title = title.substr(1, title.length()) + title.substr(0, 1);
+            SetConsoleTitleA(title.c_str());
+        }*/
         buffer.skipLine(2);
         for (int i = 0; i < 3; i++) {
             buffer.skipLine(1);
@@ -68,10 +73,9 @@ int _tmain(int argc, _TCHAR* argv[]) {
             }
             buffer.skipLine(1);
         }
-        ignoreInput++;
         //This will ignore the input most of the time. Without this, the selection would move too quickly,
         //as the other code runs extremely fast (Using double buffering as opposed to std::cout is to blame for this)
-        if (ignoreInput > 50) { 
+        if (clock() - ignoreInput > 150) { 
             if (GetAsyncKeyState(VK_UP)) {
                 selection = selection == 0 ? 2 : --selection;
                 PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
@@ -96,7 +100,7 @@ int _tmain(int argc, _TCHAR* argv[]) {
                     break;
                 }
             }
-            ignoreInput = 0;
+            ignoreInput = clock();
         }
         buffer.print();
         buffer.clear();

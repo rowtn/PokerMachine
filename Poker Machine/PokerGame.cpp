@@ -6,7 +6,7 @@
 //Originally the main function
 
 PokerGame::PokerGame() {
-    system("title Pokies");
+    system("title Arcade! - Pokies");
     init();
     system("cls");
     system("color 8a");

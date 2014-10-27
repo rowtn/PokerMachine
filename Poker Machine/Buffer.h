@@ -30,8 +30,8 @@ private:
     //screen region
     SMALL_RECT region;
 
-    //the buffer
-    CHAR_INFO buffer[3600];
+    //the buffer. pointer allows for dynamically sized array
+    CHAR_INFO *buffer;
 
     //essentially x-y coords for writing into buffer
     int column = 0, row = 0;

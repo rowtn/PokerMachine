@@ -6,6 +6,7 @@ Buffer::Buffer(int x, int y, byte bgDefault) {
     //init size
     size.X = x;
     size.Y = y;
+    buffer = new CHAR_INFO[x * y];
     coord = { 0, 0 };
     region = { 0, 0, x - 1, y - 1 }; //documentation suggested to do this
     SetConsoleScreenBufferSize(handle, size); //ensure console buffer size is consistant with this buffer class
@@ -114,9 +115,9 @@ void Buffer::writeLine(std::string s, byte colour) {
 }
 
 void Buffer::clear() {
-    for (auto &c : buffer) { //loops through every element in buffer and sets it to a space (' ') with the default colour
-        c.Char.AsciiChar = char(0);
-        c.Attributes = defaultColour;
+    for (int i = 0; i < size.X * size.Y; i++) { //loops through every element in buffer and sets it to a space (' ') with the default colour
+        buffer[i].Char.AsciiChar = char(0);
+        buffer[i].Attributes = defaultColour;
     }
     column = 0;
     row = 0;

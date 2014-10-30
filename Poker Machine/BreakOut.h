@@ -6,17 +6,18 @@ enum Direction {
 };
 
 struct Paddle {
-    int x, y;
-    Paddle(int x, int y) {
+    int x, y, length;
+    Paddle(int x, int y, int length) {
         this->x = x;
         this->y = y;
+        this->length = length;
     }
 };
 
 class BreakOut {
 private:
     Buffer buffer = { 60, 60, B_GREY };
-    Paddle paddle = { 22, 30 };
+    Paddle paddle = { 22, 30, 5 };
     //I cache the amount of blocks left on the screen so I do not have to iterate through the whole array to get the count
     int blocksLeft = 150, printOffset = 4;
     IntPair ballLocation = { 25, 29 };

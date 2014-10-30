@@ -107,40 +107,11 @@ void BreakOut::gameloop() {
         break;
     }
     /* Ball hitting paddle */
-    /*
-    A small but unnoticable amount of randomness was added to avoid repetitive gameplay.
-    */
     if (ballLocation.second == paddle.y - 1 && ballDir != STOP) {
-        if (ballLocation.first == paddle.x + 3) {
-            ballDir = N;
-            switch (time(NULL) % 3) {
-            case 0:
-                ballLocation.first++;
-                ballLocation.second--;
-                ballDir = NE;
-                break;
-            case 1:
-                ballLocation.first--;
-                ballDir = NW;
-                ballLocation.second--;
-                break;
-            }
-        } else if (ballLocation.first <= paddle.x + 2 && ballLocation.first >= paddle.x) {
-            ballDir = NW;
-            if (ballLocation.first > 5) {
-                if (time(NULL) % 3 == 0) {
-                    ballLocation.first -= 3;
-                    ballLocation.second--;
-                }
-            }
-        } else if (ballLocation.first >= paddle.x + 4 && ballLocation.first <= paddle.x + 6) {
-            ballDir = NE;
-            if (ballLocation.first < 45) {
-                if (time(NULL) % 3 == 0) {
-                    ballLocation.first += 3;
-                    ballLocation.second--;
-                }
-            }
+        if (ballLocation.first >= paddle.x && ballLocation.first <= paddle.x + paddle.length) {\
+            ballDir = getBounceDirection(ballDir);
+            if (paddle.x + 1 == ballLocation.first) ballDir = NW;
+            else if (paddle.x + paddle.length == ballLocation.first) ballDir = NE;
         }
     }
     /* move paddle */
@@ -157,8 +128,7 @@ void BreakOut::gameloop() {
     }
 
     /* print paddle */
-    for (int i = 1; i <= 5; i++) {
-        //paddle is 5 chars long, for loop simplifies printing
+    for (int i = 1; i <= paddle.length; i++) {
         buffer.writeAt(char(219), paddle.x + printOffset + i, paddle.y, F_PURPLE + B_GREY);
     }
 
@@ -189,7 +159,7 @@ void BreakOut::gameloop() {
         buffer.print(); //reprint onto screen with above modifications
         //start reset
         ballDir = STOP;
-        paddle = { 22, 30 };
+        paddle = { 22, 30, 5 };
         ballLocation = { 25, 29 };
         //end reset
 

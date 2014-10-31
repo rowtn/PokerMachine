@@ -108,7 +108,7 @@ void BreakOut::gameloop() {
     }
     /* Ball hitting paddle */
     if (ballLocation.second == paddle.y - 1 && ballDir != STOP) {
-        if (ballLocation.first >= paddle.x && ballLocation.first <= paddle.x + paddle.length) {\
+        if (ballLocation.first >= paddle.x && ballLocation.first <= paddle.x + paddle.length) {
             ballDir = getBounceDirection(ballDir);
             if (paddle.x + 1 == ballLocation.first) ballDir = NW;
             else if (paddle.x + paddle.length == ballLocation.first) ballDir = NE;

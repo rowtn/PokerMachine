@@ -2,7 +2,7 @@
 #include "Buffer.h"
 
 enum Direction {
-    N, NE, E, SE, S, SW, W, NW, STOP
+    N, NE, SE, S, SW, NW, STOP
 };
 
 struct Paddle {

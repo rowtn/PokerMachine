@@ -255,5 +255,7 @@ Direction BreakOut::getBounceDirection(Direction dir) {
         return NW;
     case SW:
         return NE;
+    case STOP:
+        return STOP;
     }
 }

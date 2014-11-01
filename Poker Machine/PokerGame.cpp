@@ -168,7 +168,7 @@ void PokerGame::init() {
     reels[0].setSpins(reels[0].getSpinsLeft() + 30); //ensures that the spinner runs for a decent amount of time, whilst still spinning a random number of times
     for (int i = 0; i < 5; i++) {
         int previous = reels[i].getSpinsLeft();
-        //reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());  //ensures that spinner the spinner directly left of spinner i + 1 must finish before 
+        reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());  //ensures that spinner the spinner directly left of spinner i + 1 must finish before 
     }                                                                   //spinner i + 1
 }
 

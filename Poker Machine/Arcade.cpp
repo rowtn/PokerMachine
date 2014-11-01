@@ -2,6 +2,7 @@
 #include "PokerGame.h"
 #include "Buffer.h"
 #include "BreakOut.h"
+#include "AsyncSound.h"
 #include <Windows.h>
 #include <fstream>
 
@@ -78,15 +79,15 @@ int _tmain(int argc, _TCHAR* argv[]) {
         if (clock() - ignoreInput > 150) { 
             if (GetAsyncKeyState(VK_UP)) {
                 selection = selection == 0 ? 2 : --selection;
-                PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
+                playSoundAsync(L"menu-move.wav");
             } else if (GetAsyncKeyState(VK_DOWN)) {
                 selection = (selection + 1) % 3; //always value between 0 - 2
-                PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
+                playSoundAsync(L"menu-move.wav");
             } else if (GetAsyncKeyState(VK_ESCAPE)) {
                 exitRequested = true;
-                PlaySound(TEXT("menu-move.wav"), NULL, SND_ASYNC);
+                playSoundAsync(L"menu-move.wav");
             } else if (GetAsyncKeyState(VK_RETURN)) {
-                PlaySound(TEXT("menu-select.wav"), NULL, SND_ASYNC);
+                playSoundAsync(L"menu-select.wav");
                 switch (selection) {
                 case 0:
                     PokerGame();

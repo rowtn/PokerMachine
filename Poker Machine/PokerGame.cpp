@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PokerGame.h"
+#include "AsyncSound.h"
 #include <thread>
 #include <mmsystem.h>
 #include <algorithm>
@@ -48,10 +49,10 @@ start:
     if (checkWins() > 0) {
         //If won something
         //sound source: http://www.freesfx.co.uk/download/?type=mp3&id=3928
-        PlaySound(TEXT("poker-win.wav"), NULL, SND_ASYNC);
+        playSoundAsync(L"poker-win.wav");
     } else {
         //sound source: http://www.soundjay.com/misc/sounds/fail-trombone-01.mp3
-        PlaySound(TEXT("poker-lose.wav"), NULL, SND_ASYNC);
+        playSoundAsync(L"poker-lose.wav");
     }
     if (credits <= 0 && coins <= 0) {
         std::cout << "\tSorry, you don't have any coins\n\t or credits. Press any key to return to the main menu";
@@ -165,9 +166,9 @@ void PokerGame::init() {
         reels[i] = Reel(); //create new reel and put in array
     }
     reels[0].setSpins(reels[0].getSpinsLeft() + 30); //ensures that the spinner runs for a decent amount of time, whilst still spinning a random number of times
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         int previous = reels[i].getSpinsLeft();
-        reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());  //ensures that spinner the spinner directly left of spinner i + 1 must finish before 
+        //reels[i + 1].setSpins(previous + reels[i + 1].getSpinsLeft());  //ensures that spinner the spinner directly left of spinner i + 1 must finish before 
     }                                                                   //spinner i + 1
 }
 

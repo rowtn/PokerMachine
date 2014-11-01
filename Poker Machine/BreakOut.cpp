@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BreakOut.h"
+#include "AsyncSound.h"
 #include <string>
 #include <thread>
 
@@ -152,7 +153,7 @@ void BreakOut::gameloop() {
     /* loss. reset game and subtract life */
     if (ballLocation.second > paddle.y + 1) {
         //sound source: http://www.soundjay.com/misc/sounds/fail-trombone-01.mp3
-        PlaySound(TEXT("poker-lose.wav"), NULL, SND_ASYNC);
+        playSoundAsync(L"poker-lose.wav");
         buffer.writeAt(ball, ballLocation.first + printOffset, ballLocation.second, F_LIGHT_RED + B_GREY); //change ball colour to red
         buffer.writeAt(char(3), printOffset + 21 + lives, 34, F_BLACK + B_GREY); //removes last heart from buffer
         lives--; //decrements lives counter
@@ -229,7 +230,7 @@ void BreakOut::gameloop() {
     //if all blocks have been destroyed
     if (blocksLeft == 0) {
         //sound source: http://www.freesfx.co.uk/download/?type=mp3&id=3928
-        PlaySound(TEXT("poker-win.wav"), NULL, SND_ASYNC);
+        playSoundAsync(L"poker-win.wav");
         won = true;
         gameRunning = false;
     }

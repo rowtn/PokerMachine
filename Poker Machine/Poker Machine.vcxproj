@@ -80,6 +80,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AsyncSound.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="BreakOut.h" />
     <ClInclude Include="PokerCard.h" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arcade.cpp" />
+    <ClCompile Include="AsyncSound.cpp" />
     <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="BreakOut.cpp" />
     <ClCompile Include="PokerCard.cpp" />
